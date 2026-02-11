@@ -126,8 +126,8 @@
 
             <!-- Recent Inspections -->
             <div class="card bg-base-100 shadow-lg">
-                <div class="card-body">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="card-body p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-4">
                         <h3 class="font-semibold text-lg flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
@@ -138,29 +138,104 @@
                             + Inspeksi Baru
                         </a>
                     </div>
+
                     @if($apar->inspeksi->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="table table-sm">
-                            <thead>
+                    <div class="overflow-x-auto border rounded-lg">
+                        <table class="table table-xs md:table-sm">
+                            <thead class="bg-base-200">
                                 <tr>
-                                    <th>Tanggal</th>
-                                    <th>Inspektor</th>
-                                    <th>Status</th>
-                                    <th>Pressure</th>
+                                    <th class="whitespace-nowrap z-10 sticky left-0 bg-base-200">Tanggal & Petugas</th>
+                                    <th class="text-center">Status Akhir</th>
+                                    <th class="text-center" title="Pressure Gauge">Press.</th>
+                                    <th class="text-center" title="Kondisi Fisik Tabung">Fisik</th>
+                                    <th class="text-center" title="Segel Pengaman">Segel</th>
+                                    <th class="text-center" title="Kondisi Selang">Selang</th>
+                                    <th class="text-center" title="Kondisi Nozzle">Nozzle</th>
+                                    <th class="text-center" title="Handle Operasi">Handle</th>
+                                    <th class="text-center" title="Label Instruksi">Label</th>
+                                    <th class="text-center" title="Signage APAR">Sign</th>
+                                    <th class="text-center" title="Posisi Ketinggian">Posisi</th>
+                                    <th class="text-center" title="Aksesibilitas">Akses</th>
+                                    <th class="text-center" title="Kebersihan">Bersih</th>
+                                    <th class="min-w-[150px]">Catatan & Bukti</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($apar->inspeksi as $inspeksi)
-                                <tr>
-                                    <td>{{ $inspeksi->tanggal_inspeksi?->format('d/m/Y') ?? '-' }}</td>
-                                    <td>{{ $inspeksi->user?->name ?? '-' }}</td>
-                                    <td>
-                                        <span class="badge badge-sm {{ $inspeksi->status === 'baik' ? 'badge-success' : 'badge-warning' }}">
-                                            {{ ucfirst($inspeksi->status ?? 'N/A') }}
+                                <tr class="hover">
+                                    <td class="whitespace-nowrap sticky left-0 bg-base-100 shadow-sm">
+                                        <div class="font-bold">{{ $inspeksi->tanggal_inspeksi?->format('d/m/Y') ?? '-' }}</div>
+                                        <div class="text-xs text-base-content/60">{{ $inspeksi->user?->name ?? 'System' }}</div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        @php
+                                            $badgeClass = match($inspeksi->overall_status) {
+                                                'baik' => 'badge-success text-white',
+                                                'kurang' => 'badge-warning text-white',
+                                                'rusak' => 'badge-error text-white',
+                                                default => 'badge-ghost'
+                                            };
+                                        @endphp
+                                        <span class="badge badge-sm {{ $badgeClass }} font-semibold">
+                                            {{ strtoupper($inspeksi->overall_status ?? 'N/A') }}
                                         </span>
                                     </td>
+
+                                    <td class="text-center">
+                                        <div class="tooltip" data-tip="Pressure: {{ ucfirst($inspeksi->pressure_status) }}">
+                                            <div class="w-4 h-4 rounded-full mx-auto border {{ 
+                                                $inspeksi->pressure_status === 'hijau' ? 'bg-success' : 
+                                                ($inspeksi->pressure_status === 'kuning' ? 'bg-warning' : 'bg-error') 
+                                            }}"></div>
+                                        </div>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="tooltip" data-tip="Fisik: {{ ucfirst($inspeksi->physical_condition) }}">
+                                            @if($inspeksi->physical_condition === 'baik')
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-success mx-auto" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-error mx-auto" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                                            @endif
+                                        </div>
+                                    </td>
+
+                                    @foreach([
+                                        'seal_condition', 'hose_condition', 'nozzle_condition', 
+                                        'handle_condition', 'label_condition', 'signage_condition',
+                                        'height_position', 'accessibility', 'cleanliness'
+                                    ] as $check)
+                                    <td class="text-center">
+                                        @if($inspeksi->$check)
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-success mx-auto opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-error mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        @endif
+                                    </td>
+                                    @endforeach
+
                                     <td>
-                                        <span class="w-3 h-3 rounded-full inline-block bg-{{ $inspeksi->kondisi_pressure === 'hijau' ? 'success' : ($inspeksi->kondisi_pressure === 'kuning' ? 'warning' : 'error') }}"></span>
+                                        <div class="flex flex-col gap-1">
+                                            @if($inspeksi->catatan)
+                                                <span class="text-xs italic text-base-content/70">"{{ Str::limit($inspeksi->catatan, 30) }}"</span>
+                                            @else
+                                                <span class="text-xs text-base-content/30">-</span>
+                                            @endif
+
+                                            @if($inspeksi->photo_path)
+                                                <button onclick="window.open('{{ Storage::url($inspeksi->photo_path) }}', '_blank')" class="btn btn-xs btn-outline btn-ghost gap-1 w-max">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    Foto
+                                                </button>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -168,7 +243,12 @@
                         </table>
                     </div>
                     @else
-                    <p class="text-center text-base-content/60 py-4">Belum ada inspeksi</p>
+                    <div class="flex flex-col items-center justify-center py-8 text-base-content/50 border-2 border-dashed rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-2 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <p>Belum ada data inspeksi</p>
+                    </div>
                     @endif
                 </div>
             </div>
