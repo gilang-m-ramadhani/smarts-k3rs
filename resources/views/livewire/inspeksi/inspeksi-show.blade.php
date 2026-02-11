@@ -1,9 +1,4 @@
 <div class="container mx-auto px-4 py-6">
-    <style>
-        .pressure-indicator { display: inline-block; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.1); }
-        .pressure-hijau { background-color: #22c55e; box-shadow: 0 0 0 2px #dcfce7; }
-        .pressure-merah { background-color: #ef4444; box-shadow: 0 0 0 2px #fee2e2; }
-    </style>
 
     <div class="mb-6 flex justify-between items-center">
         <div>
