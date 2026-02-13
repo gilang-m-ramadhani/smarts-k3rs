@@ -8,16 +8,20 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1
+                class="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent
+                        [text-shadow:0_0_0.5px_rgba(0,0,0,0.4),0_2px_6px_rgba(0,0,0,0.35)]">
                 SMART K3
             </h1>
-            <p class="text-base-content/60 mt-2">Sistem Manajemen APAR Terintegrasi</p>
+            <p class="text-base-content/70 mt-2 drop-shadow-sm">
+                Sistem Manajemen APAR Terintegrasi
+            </p>
         </div>
 
         <!-- Login Card -->
         <div class="login-card">
             <h2 class="text-xl font-semibold text-center mb-6 text-base-content">
-                Selamat Datang 👋
+                Selamat Datang
             </h2>
 
             @if($errors->any())
@@ -42,13 +46,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                             </svg>
                         </span>
-                        <input type="email" 
-                               name="email" 
-                               value="{{ old('email') }}"
-                               placeholder="nama@email.com" 
-                               class="input input-modern w-full pl-12 h-12 @error('email') input-error @enderror"
-                               required 
-                               autofocus />
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="nama@email.com" class="input input-modern w-full pl-12 h-12 @error('email') input-error @enderror" required autofocus />
                     </div>
                 </div>
 
@@ -62,11 +60,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </span>
-                        <input type="password" 
-                               name="password" 
-                               placeholder="••••••••" 
-                               class="input input-modern w-full pl-12 h-12 @error('password') input-error @enderror"
-                               required />
+                        <input type="password" name="password" placeholder="••••••••" class="input input-modern w-full pl-12 h-12 @error('password') input-error @enderror" required />
                     </div>
                 </div>
 

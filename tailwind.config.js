@@ -8,20 +8,6 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: {
-          50: '#fef2f2',
-          100: '#fee2e2',
-          200: '#fecaca',
-          300: '#fca5a5',
-          400: '#f87171',
-          500: '#ef4444',
-          600: '#dc2626',
-          700: '#b91c1c',
-          800: '#991b1b',
-          900: '#7f1d1d',
-        }
-      }
     },
   },
   plugins: [require("daisyui")],
@@ -29,26 +15,34 @@ export default {
     themes: [
       {
         smartk3: {
-          "primary": "#dc2626",
+          // PRIMARY: Ungu (#662D91) – BUKAN HIJAU
+          "primary": "#662D91",
           "primary-content": "#ffffff",
-          "secondary": "#f97316",
+          // SECONDARY: Pink (#EC008C)
+          "secondary": "#EC008C",
           "secondary-content": "#ffffff",
-          "accent": "#fbbf24",
-          "accent-content": "#1f2937",
-          "neutral": "#374151",
-          "neutral-content": "#f3f4f6",
-          "base-100": "#ffffff",
-          "base-200": "#f3f4f6",
-          "base-300": "#e5e7eb",
-          "base-content": "#1f2937",
-          "info": "#3b82f6",
-          "info-content": "#ffffff",
-          "success": "#22c55e",
+          // ACCENT: Oranye (#F7931D)
+          "accent": "#F7931D",
+          "accent-content": "#000000", // kontras biar terbaca
+          // SUCCESS: Hijau (#00A651)
+          "success": "#00A651",
           "success-content": "#ffffff",
-          "warning": "#f59e0b",
-          "warning-content": "#1f2937",
-          "error": "#ef4444",
+          // WARNING: Oranye (sama dengan accent)
+          "warning": "#F7931D",
+          "warning-content": "#000000",
+          // ERROR: Merah standar (tetap kontras)
+          "error": "#EF4444",
           "error-content": "#ffffff",
+          // INFO: Ungu muda
+          "info": "#8A5EB8",
+          "info-content": "#ffffff",
+          // NEUTRAL & BASE
+          "neutral": "#374151",
+          "neutral-content": "#F3F4F6",
+          "base-100": "#FFFFFF",
+          "base-200": "#F9F9FC",
+          "base-300": "#EDEDF2",
+          "base-content": "#1F2937",
         },
       },
       "light",
@@ -56,4 +50,4 @@ export default {
     ],
     darkTheme: "dark",
   },
-}
+};

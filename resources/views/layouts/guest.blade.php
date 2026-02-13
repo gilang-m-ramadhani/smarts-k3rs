@@ -17,26 +17,56 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image:
+                linear-gradient(
+                    145deg,
+                    rgba(0, 166, 81, 0.45),  
+                    rgba(247, 147, 29, 0.45),
+                    rgba(236, 0, 140, 0.18),  
+                    rgba(102, 45, 145, 0.18)
+                ),
+                url('/images/bg-app.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
+
         .bg-pattern {
             background-image: 
-                radial-gradient(ellipse at 20% 30%, rgba(147, 197, 253, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 70%, rgba(196, 181, 253, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(165, 243, 252, 0.2) 0%, transparent 70%);
+                radial-gradient(ellipse at 20% 30%, rgba(0, 166, 81, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(247, 147, 29, 0.25) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 60%, rgba(236, 0, 140, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(102, 45, 145, 0.15) 0%, transparent 60%);
         }
+
+        .floating-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
         .floating-shapes div {
             position: absolute;
             border-radius: 50%;
-            background: linear-gradient(135deg, rgba(147, 197, 253, 0.3), rgba(196, 181, 253, 0.3));
+            background: linear-gradient(
+                135deg,
+                rgba(0, 166, 81, 0.25),
+                rgba(247, 147, 29, 0.25)
+            );
             animation: float 8s ease-in-out infinite;
         }
+
         .floating-shapes div:nth-child(1) {
             width: 300px;
             height: 300px;
             top: 10%;
             left: 10%;
-            animation-delay: 0s;
         }
+
         .floating-shapes div:nth-child(2) {
             width: 200px;
             height: 200px;
@@ -44,6 +74,7 @@
             right: 15%;
             animation-delay: 2s;
         }
+
         .floating-shapes div:nth-child(3) {
             width: 150px;
             height: 150px;
@@ -51,22 +82,38 @@
             left: 20%;
             animation-delay: 4s;
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(5deg);
+            }
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 bg-pattern">
-    <!-- Floating Shapes Background -->
-    <div class="floating-shapes fixed inset-0 overflow-hidden pointer-events-none">
+
+<body>
+    <!-- Floating Shapes -->
+    <div class="floating-shapes">
         <div></div>
         <div></div>
         <div></div>
     </div>
 
     <!-- Content -->
-    <div class="min-h-screen flex items-center justify-center p-4 relative z-10">
+    <div class="page-wrapper bg-pattern">
         {{ $slot }}
     </div>
 </body>
