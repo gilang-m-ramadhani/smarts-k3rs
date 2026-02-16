@@ -26,7 +26,7 @@
                     rgba(236, 0, 140, 0.18),  
                     rgba(102, 45, 145, 0.18)
                 ),
-                url('/images/bg-app.png');
+                url('/images/bg-login.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

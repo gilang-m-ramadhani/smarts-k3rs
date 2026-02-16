@@ -139,30 +139,31 @@
   }
 
   .glass-card {
-    @apply rounded-2xl border border-white/30 shadow-xl;
+    @apply rounded-3xl shadow-2xl p-8 border border-white/30;
     background: linear-gradient(
-      145deg,
-      rgba(0, 166, 81, 0.18),
-      rgba(247, 147, 29, 0.18),
-      rgba(236, 0, 140, 0.08),
-      rgba(102, 45, 145, 0.08)
-    ), rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-  }
-
-  .login-card {
-    @apply rounded-3xl shadow-2xl p-8 border border-white/20;
-    background: linear-gradient(
-      145deg,
-      rgba(0, 166, 81, 0.25),
-      rgba(247, 147, 29, 0.25),
-      rgba(236, 0, 140, 0.12),
-      rgba(102, 45, 145, 0.12)
-    ), rgba(255, 255, 255, 0.85);
+        145deg,
+        rgba(0, 166, 81, 0.20),
+        rgba(247, 147, 29, 0.20),
+        rgba(236, 0, 140, 0.10),
+        rgba(102, 45, 145, 0.10)
+    ), rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
+
+  .login-card {
+    @apply rounded-3xl shadow-2xl p-8 border border-white/30;
+    background: linear-gradient(
+        145deg,
+        rgba(0, 166, 81, 0.20),
+        rgba(247, 147, 29, 0.20),
+        rgba(236, 0, 140, 0.10),
+        rgba(102, 45, 145, 0.10)
+    ), rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    }
+
 
   .btn-gradient {
     @apply bg-gradient-to-r from-primary to-secondary text-white border-0 hover:opacity-90 transition-all duration-300;
@@ -170,6 +171,45 @@
 
   .input-modern {
     @apply bg-base-200/50 border-base-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-xl;
+  }
+
+  .body-bg {
+    background-image:
+        linear-gradient(
+            145deg,
+            rgba(0, 166, 81, 0.45),  
+            rgba(247, 147, 29, 0.45),
+            rgba(236, 0, 140, 0.18),  
+            rgba(102, 45, 145, 0.18)
+        ),
+        url('/images/bg-app.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  .glass-panel {
+    @apply border border-white/40 shadow-xl backdrop-blur-md;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.90),
+      rgba(255, 255, 255, 0.80)
+    );
+  }
+
+  .glass-nav {
+    @apply border-b border-white/30 backdrop-blur-md;
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 166, 81, 0.25), rgba(247, 147, 29, 0.25));
+    animation: float 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
   }
 }
 
@@ -232,4 +272,12 @@
 .pressure-merah {
   background-color: #DC2626;
   box-shadow: 0 0 0 2px rgba(236, 0, 140, 0.25);
+}
+
+.text-readable {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.text-readable-soft {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 }

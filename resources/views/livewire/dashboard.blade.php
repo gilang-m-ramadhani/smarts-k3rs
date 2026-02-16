@@ -3,10 +3,15 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
             <h1 class="text-2xl font-bold text-base-content">Dashboard</h1>
-            <p class="text-base-content/60">Selamat datang di SMART K3 - Sistem Manajemen APAR</p>
+            <p class="text-base-content/100">Selamat datang di SMART K3 - Sistem Manajemen APAR</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
-            <span class="badge badge-lg">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
+        <span class="badge badge-lg
+            bg-[#EC008C]
+            text-white
+            border-0">
+            {{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}
+        </span>
             <div class="divider divider-horizontal mx-0 hidden md:flex"></div>
             <a href="{{ route('inspeksi.create') }}" class="btn btn-sm btn-primary gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,10 +31,10 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <!-- Total APAR -->
-        <a href="{{ route('apar.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
+        <a href="{{ route('apar.index') }}" class="glass-card p-6 group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-base-content/60 text-sm">Total APAR</p>
+                    <p class="text-base-content/100 text-sm">Total APAR</p>
                     <p class="text-3xl font-bold text-primary">{{ $totalApar }}</p>
                 </div>
                 <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
@@ -45,10 +50,10 @@
         </a>
 
         <!-- Inspeksi Bulan Ini -->
-        <a href="{{ route('inspeksi.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
+        <a href="{{ route('inspeksi.index') }}" class="glass-card p-6 group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-base-content/60 text-sm">Inspeksi Bulan Ini</p>
+                    <p class="text-base-content/100 text-sm">Inspeksi Bulan Ini</p>
                     <p class="text-3xl font-bold text-info">{{ $inspeksiBulanIni }}</p>
                 </div>
                 <div class="w-14 h-14 rounded-full bg-info/10 flex items-center justify-center group-hover:bg-info group-hover:text-white transition-all">
@@ -67,10 +72,10 @@
         </a>
 
         <!-- Maintenance Pending -->
-        <a href="{{ route('maintenance.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
+        <a href="{{ route('maintenance.index') }}" class="glass-card p-6 group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-base-content/60 text-sm">Maintenance Pending</p>
+                    <p class="text-base-conten80 text-sm">Maintenance Pending</p>
                     <p class="text-3xl font-bold text-warning">{{ $maintenancePending }}</p>
                 </div>
                 <div class="w-14 h-14 rounded-full bg-warning/10 flex items-center justify-center group-hover:bg-warning group-hover:text-white transition-all">
@@ -89,10 +94,10 @@
         </a>
 
         <!-- APAR Expired -->
-        <a href="{{ route('apar.index') }}?status=expired" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl {{ $aparExpired > 0 ? 'ring-2 ring-error/30' : '' }}">
+        <a href="{{ route('apar.index') }}?status=expired" class="glass-card p-6 group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-base-content/60 text-sm">APAR Expired</p>
+                    <p class="text-base-content/100 text-sm">APAR Expired</p>
                     <p class="text-3xl font-bold text-error">{{ $aparExpired }}</p>
                 </div>
                 <div class="w-14 h-14 rounded-full bg-error/10 flex items-center justify-center group-hover:bg-error group-hover:text-white transition-all {{ $aparExpired > 0 ? 'animate-pulse' : '' }}">
@@ -113,156 +118,189 @@
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Status Chart -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <h2 class="card-title text-lg">Status APAR</h2>
-                <div id="statusChart" class="h-72"></div>
-            </div>
+        <div class="glass-card p-6">
+            <h2 class="card-title text-lg mb-4">Status APAR</h2>
+            <div id="statusChart" class="h-72"></div>
         </div>
 
         <!-- Tipe Chart -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <h2 class="card-title text-lg">APAR Berdasarkan Tipe</h2>
-                <div id="tipeChart" class="h-72"></div>
-            </div>
+        <div class="glass-card p-6">
+            <h2 class="card-title text-lg mb-4">APAR Berdasarkan Tipe</h2>
+            <div id="tipeChart" class="h-72"></div>
         </div>
     </div>
 
     <!-- Tables Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Recent Inspeksi -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="card-title text-lg">Inspeksi Terbaru</h2>
-                    <a href="{{ route('inspeksi.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>APAR</th>
-                                <th>Tanggal</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentInspeksi as $inspeksi)
-                            <tr>
-                                <td>
-                                    <div class="font-medium">{{ $inspeksi->apar->id_apar }}</div>
-                                    <div class="text-xs text-base-content/60">{{ $inspeksi->apar->lokasi->nama_lokasi ?? '-' }}</div>
-                                </td>
-                                <td>{{ $inspeksi->tanggal_inspeksi->format('d/m/Y') }}</td>
-                                <td>
-                                    <span class="badge {{ $inspeksi->overall_status_badge }} badge-sm">
-                                        {{ ucfirst($inspeksi->overall_status) }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-base-content/60">Belum ada data inspeksi</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+        <div class="glass-card p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="card-title text-lg">Inspeksi Terbaru</h2>
+                <a href="{{ route('inspeksi.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
+            </div>
+            <div class="overflow-x-auto">
+            <table class="table table-sm table-bordered border-2 border-base-200/70">
+                <thead class="bg-base-200/40">
+                    <tr>
+                        <th class="border-1 border-base-200/70">APAR</th>
+                        <th class="border-1 border-base-200/70">Tanggal</th>
+                        <th class="border-1 border-base-200/70">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-base-200/70">
+                    @forelse($recentInspeksi as $inspeksi)
+                    <tr class="hover:bg-base-200/30 transition">
+                        <td class="border-1 border-base-200/70">
+                            <div class="font-medium">{{ $inspeksi->apar->id_apar }}</div>
+                            <div class="text-xs text-base-content/70">
+                                {{ $inspeksi->apar->lokasi->nama_lokasi ?? '-' }}
+                            </div>
+                        </td>
+
+                        <td class="border-1 border-base-200/70">
+                            {{ $inspeksi->tanggal_inspeksi->format('d/m/Y') }}
+                        </td>
+
+                        <td class="border-1 border-base-200/70">
+                            <span class="badge {{ $inspeksi->overall_status_badge }} badge-sm">
+                                {{ ucfirst($inspeksi->overall_status) }}
+                            </span>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="text-center text-base-content/70 border-1 border-base-200/70">
+                            Belum ada data inspeksi
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
             </div>
         </div>
 
         <!-- APAR Akan Expired -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="card-title text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        APAR Akan Expired (30 Hari)
-                    </h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>APAR</th>
-                                <th>Lokasi</th>
-                                <th>Expired</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($expiringApar as $apar)
-                            <tr>
-                                <td>
-                                    <div class="font-medium">{{ $apar->id_apar }}</div>
-                                    <div class="text-xs text-base-content/60">{{ $apar->merk }} - {{ strtoupper($apar->tipe_apar) }}</div>
-                                </td>
-                                <td>{{ $apar->lokasi->nama_lokasi ?? '-' }}</td>
-                                <td>
-                                    <span class="text-warning font-medium">{{ $apar->tanggal_expire->format('d/m/Y') }}</span>
-                                    <div class="text-xs text-base-content/60">{{ $apar->days_until_expire }} hari lagi</div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-base-content/60">Tidak ada APAR yang akan expired</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+        <div class="glass-card p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="card-title text-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    APAR Akan Expired (30 Hari)
+                </h2>
+            </div>
+            <div class="overflow-x-auto">
+            <table class="table table-sm border border-base-200/70">
+                <thead class="bg-base-200/40">
+                    <tr>
+                        <th class="border border-base-200/70">APAR</th>
+                        <th class="border border-base-200/70">Lokasi</th>
+                        <th class="border border-base-200/70">Expired</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-base-200/70">
+                    @forelse($expiringApar as $apar)
+                    <tr class="hover:bg-base-200/30 transition">
+                        <td class="border border-base-200/70">
+                            <div class="font-medium">{{ $apar->id_apar }}</div>
+                            <div class="text-xs text-base-content/70">
+                                {{ $apar->merk }} - {{ strtoupper($apar->tipe_apar) }}
+                            </div>
+                        </td>
+
+                        <td class="border border-base-200/70">
+                            {{ $apar->lokasi->nama_lokasi ?? '-' }}
+                        </td>
+
+                        <td class="border border-base-200/70">
+                            <span class="text-warning font-medium">
+                                {{ $apar->tanggal_expire->format('d/m/Y') }}
+                            </span>
+                            <div class="text-xs text-base-content/70">
+                                {{ $apar->days_until_expire }} hari lagi
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="3" class="text-center text-base-content/70 border border-base-200/70">
+                            Tidak ada APAR yang akan expired
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
             </div>
         </div>
     </div>
 
     <!-- Upcoming Maintenance -->
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="card-title text-lg">Jadwal Maintenance</h2>
-                <a href="{{ route('maintenance.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>No. WO</th>
-                            <th>APAR</th>
-                            <th>Tipe</th>
-                            <th>Teknisi</th>
-                            <th>Jadwal</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($upcomingMaintenance as $wo)
-                        <tr>
-                            <td class="font-mono">{{ $wo->wo_number }}</td>
-                            <td>
-                                <div class="font-medium">{{ $wo->apar->id_apar }}</div>
-                                <div class="text-xs text-base-content/60">{{ $wo->apar->lokasi->nama_lokasi ?? '-' }}</div>
-                            </td>
-                            <td>
-                                <span class="badge badge-outline badge-sm">{{ $wo->maintenance_type_label }}</span>
-                            </td>
-                            <td>{{ $wo->teknisi->name ?? 'Belum ditentukan' }}</td>
-                            <td>{{ $wo->scheduled_date->format('d/m/Y') }}</td>
-                            <td>
-                                <span class="badge {{ $wo->status_badge }} badge-sm">
-                                    {{ ucfirst(str_replace('_', ' ', $wo->status)) }}
-                                </span>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-base-content/60">Tidak ada jadwal maintenance</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+    <div class="glass-card p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="card-title text-lg">Jadwal Maintenance</h2>
+            <a href="{{ route('maintenance.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
+        </div>
+        <div class="overflow-x-auto">
+        <table class="table table-sm border border-base-200/70">
+            <thead class="bg-base-200/40">
+                <tr>
+                    <th class="border border-base-200/70">No. WO</th>
+                    <th class="border border-base-200/70">APAR</th>
+                    <th class="border border-base-200/70">Tipe</th>
+                    <th class="border border-base-200/70">Teknisi</th>
+                    <th class="border border-base-200/70">Jadwal</th>
+                    <th class="border border-base-200/70">Status</th>
+                </tr>
+            </thead>
+
+            <tbody class="divide-y divide-base-200/70">
+                @forelse($upcomingMaintenance as $wo)
+                <tr class="hover:bg-base-200/30 transition">
+                    <td class="font-mono border border-base-200/70">
+                        {{ $wo->wo_number }}
+                    </td>
+
+                    <td class="border border-base-200/70">
+                        <div class="font-medium">{{ $wo->apar->id_apar }}</div>
+                        <div class="text-xs text-base-content/70">
+                            {{ $wo->apar->lokasi->nama_lokasi ?? '-' }}
+                        </div>
+                    </td>
+
+                    <td class="border border-base-200/70 text-center">
+                        <div class="w-full">
+                            <span class="badge badge-outline badge-sm w-full justify-center whitespace-normal leading-tight">
+                                {{ $wo->maintenance_type_label }}
+                            </span>
+                        </div>
+                    </td>
+
+
+                    <td class="border border-base-200/70">
+                        {{ $wo->teknisi->name ?? 'Belum ditentukan' }}
+                    </td>
+
+                    <td class="border border-base-200/70">
+                        {{ $wo->scheduled_date->format('d/m/Y') }}
+                    </td>
+
+                    <td class="border border-base-200/70">
+                        <span class="badge {{ $wo->status_badge }} badge-sm">
+                            {{ ucfirst(str_replace('_', ' ', $wo->status)) }}
+                        </span>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="text-center text-base-content/70 border border-base-200/70">
+                        Tidak ada jadwal maintenance
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
         </div>
     </div>
 </div>
@@ -278,6 +316,9 @@ document.addEventListener('DOMContentLoaded', function() {
         chart: {
             type: 'donut',
             height: 280,
+        },
+        stroke: {
+        width: 0
         },
         legend: {
             position: 'bottom'
