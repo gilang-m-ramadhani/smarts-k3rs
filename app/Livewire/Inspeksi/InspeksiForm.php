@@ -12,20 +12,20 @@ class InspeksiForm extends Component
     public $aparId = '';
     public $tanggal_inspeksi;
     
-    // Checklist items
-    public $kondisi_tabung = true;
-    public $kondisi_selang = true;
-    public $kondisi_pin = true;
-    public $kondisi_segel = true;
-    public $kondisi_nozzle = true;
-    public $kondisi_label = true;
-    public $kondisi_mounting = true;
-    public $kondisi_pressure = 'hijau';
-    public $aksesibilitas = true;
-    public $signage = true;
+    // Checklist items — MUST match DB column names
+    public $physical_condition = 'baik';
+    public $pressure_status = 'hijau';
+    public $seal_condition = true;
+    public $hose_condition = true;
+    public $nozzle_condition = true;
+    public $handle_condition = true;
+    public $label_condition = true;
+    public $signage_condition = true;
+    public $height_position = true;
+    public $accessibility = true;
+    public $cleanliness = true;
     
     public $catatan = '';
-    public $rekomendasi = '';
     
     public $aparList = [];
     public $selectedApar = null;
@@ -33,16 +33,17 @@ class InspeksiForm extends Component
     protected $rules = [
         'aparId' => 'required|exists:apar,id_apar',
         'tanggal_inspeksi' => 'required|date',
-        'kondisi_tabung' => 'boolean',
-        'kondisi_selang' => 'boolean',
-        'kondisi_pin' => 'boolean',
-        'kondisi_segel' => 'boolean',
-        'kondisi_nozzle' => 'boolean',
-        'kondisi_label' => 'boolean',
-        'kondisi_mounting' => 'boolean',
-        'kondisi_pressure' => 'required|in:hijau,kuning,merah',
-        'aksesibilitas' => 'boolean',
-        'signage' => 'boolean',
+        'physical_condition' => 'required|in:baik,cukup,rusak',
+        'pressure_status' => 'required|in:hijau,kuning,merah',
+        'seal_condition' => 'boolean',
+        'hose_condition' => 'boolean',
+        'nozzle_condition' => 'boolean',
+        'handle_condition' => 'boolean',
+        'label_condition' => 'boolean',
+        'signage_condition' => 'boolean',
+        'height_position' => 'boolean',
+        'accessibility' => 'boolean',
+        'cleanliness' => 'boolean',
     ];
 
     public function mount($apar = null)
@@ -72,22 +73,44 @@ class InspeksiForm extends Component
     {
         $this->validate();
 
-        $inspeksi = Inspeksi::create([
+        // Calculate overall status based on checklist score
+        $score = 0;
+        $boolChecks = [
+            'seal_condition', 'hose_condition', 'nozzle_condition',
+            'handle_condition', 'label_condition', 'signage_condition',
+            'height_position', 'accessibility', 'cleanliness'
+        ];
+        foreach ($boolChecks as $check) {
+            if ($this->$check) $score++;
+        }
+        if ($this->pressure_status === 'hijau') $score++;
+        if ($this->physical_condition === 'baik') $score++;
+
+        if ($score >= 10) {
+            $overallStatus = 'baik';
+        } elseif ($score >= 7) {
+            $overallStatus = 'kurang';
+        } else {
+            $overallStatus = 'rusak';
+        }
+
+        Inspeksi::create([
             'id_apar' => $this->aparId,
             'id_user' => Auth::id(),
             'tanggal_inspeksi' => $this->tanggal_inspeksi,
-            'kondisi_tabung' => $this->kondisi_tabung,
-            'kondisi_selang' => $this->kondisi_selang,
-            'kondisi_pin' => $this->kondisi_pin,
-            'kondisi_segel' => $this->kondisi_segel,
-            'kondisi_nozzle' => $this->kondisi_nozzle,
-            'kondisi_label' => $this->kondisi_label,
-            'kondisi_mounting' => $this->kondisi_mounting,
-            'kondisi_pressure' => $this->kondisi_pressure,
-            'aksesibilitas' => $this->aksesibilitas,
-            'signage' => $this->signage,
+            'pressure_status' => $this->pressure_status,
+            'physical_condition' => $this->physical_condition,
+            'seal_condition' => $this->seal_condition,
+            'hose_condition' => $this->hose_condition,
+            'nozzle_condition' => $this->nozzle_condition,
+            'handle_condition' => $this->handle_condition,
+            'label_condition' => $this->label_condition,
+            'signage_condition' => $this->signage_condition,
+            'height_position' => $this->height_position,
+            'accessibility' => $this->accessibility,
+            'cleanliness' => $this->cleanliness,
+            'overall_status' => $overallStatus,
             'catatan' => $this->catatan,
-            'rekomendasi' => $this->rekomendasi,
         ]);
 
         session()->flash('message', 'Inspeksi berhasil disimpan.');

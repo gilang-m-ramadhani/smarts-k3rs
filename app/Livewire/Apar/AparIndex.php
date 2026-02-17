@@ -110,6 +110,10 @@ class AparIndex extends Component
         return view('livewire.apar.apar-index', [
             'aparList' => $aparList,
             'lokasiList' => $lokasiList,
+            'totalApar' => Apar::count(),
+            'aparAktif' => Apar::where('status', 'aktif')->count(),
+            'aparRusak' => Apar::where('status', 'rusak')->count(),
+            'aparExpired' => Apar::where('tanggal_expire', '<', now())->count(),
         ])->layout('layouts.app', ['title' => 'Data APAR']);
     }
 }

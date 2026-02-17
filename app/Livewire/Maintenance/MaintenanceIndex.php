@@ -15,11 +15,11 @@ class MaintenanceIndex extends Component
     public $search = '';
     public $filterStatus = '';
     public $filterType = '';
-    
+
     // Modal state
     public $showModal = false;
     public $editId = null;
-    
+
     // Form fields
     public $id_apar = '';
     public $maintenance_type = 'ringan';
@@ -59,7 +59,7 @@ class MaintenanceIndex extends Component
             'wo_number' => $woNumber,
             'id_apar' => $this->id_apar,
             'maintenance_type' => $this->maintenance_type,
-            'description' => $this->description,
+            'work_description' => $this->description,
             'scheduled_date' => $this->scheduled_date,
             'assigned_to' => $this->assigned_to ?: null,
             'priority' => $this->priority,
@@ -68,6 +68,7 @@ class MaintenanceIndex extends Component
         ]);
 
         session()->flash('message', 'Work Order berhasil dibuat.');
+        $this->dispatch('notify', type: 'success', title: 'Berhasil', message: 'Work Order berhasil dibuat.');
         $this->closeModal();
     }
 
@@ -78,7 +79,7 @@ class MaintenanceIndex extends Component
 
         if ($this->search) {
             $query->where('wo_number', 'like', "%{$this->search}%")
-                  ->orWhereHas('apar', fn($q) => $q->where('id_apar', 'like', "%{$this->search}%"));
+                ->orWhereHas('apar', fn($q) => $q->where('id_apar', 'like', "%{$this->search}%"));
         }
 
         if ($this->filterStatus) {

@@ -1,206 +1,110 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* Custom SMART K3 Theme with Pastel Blue */
+/* ═══════════════════════════════════════════════════
+   SMART K3 — Teal Pastel Theme
+   Palette: #09637E · #088395 · #7AB2B2 · #EBF4F6
+   Font: Plus Jakarta Sans
+   ═══════════════════════════════════════════════════ */
+
 @plugin "daisyui" {
     themes: light --default, dark;
 }
 
-/* Custom theme colors - Pastel Blue */
+/* ── Light Theme ──────────────────────────────────── */
 :root {
-    --color-primary: oklch(70% 0.12 240);
-    --color-primary-content: oklch(98% 0.01 240);
-    --color-secondary: oklch(75% 0.1 280);
-    --color-secondary-content: oklch(98% 0.01 280);
-    --color-accent: oklch(72% 0.15 180);
-    --color-accent-content: oklch(98% 0.01 180);
-    --color-neutral: oklch(35% 0.02 260);
-    --color-neutral-content: oklch(98% 0.01 260);
-    --color-base-100: oklch(99% 0.01 240);
-    --color-base-200: oklch(96% 0.015 240);
-    --color-base-300: oklch(92% 0.02 240);
-    --color-base-content: oklch(25% 0.02 260);
-    --color-info: oklch(70% 0.15 220);
-    --color-success: oklch(72% 0.18 150);
-    --color-warning: oklch(80% 0.15 85);
-    --color-error: oklch(65% 0.2 25);
+    --color-primary: oklch(50% 0.1 195);           /* #088395 — teal */
+    --color-primary-content: oklch(99% 0.005 200);
+    --color-secondary: oklch(42% 0.09 200);         /* #09637E — dark teal */
+    --color-secondary-content: oklch(99% 0.005 200);
+    --color-accent: oklch(72% 0.065 185);           /* #7AB2B2 — light teal */
+    --color-accent-content: oklch(18% 0.03 200);
+    --color-neutral: oklch(28% 0.025 210);
+    --color-neutral-content: oklch(95% 0.005 200);
+    --color-base-100: oklch(99.5% 0.002 200);       /* white */
+    --color-base-200: oklch(97% 0.008 200);          /* #EBF4F6 ice-blue */
+    --color-base-300: oklch(93% 0.014 200);
+    --color-base-content: oklch(22% 0.025 210);
+    --color-info: oklch(62% 0.16 245);
+    --color-info-content: oklch(99% 0.005 245);
+    --color-success: oklch(68% 0.17 155);
+    --color-success-content: oklch(99% 0.005 155);
+    --color-warning: oklch(78% 0.15 75);
+    --color-warning-content: oklch(25% 0.04 75);
+    --color-error: oklch(60% 0.22 25);
+    --color-error-content: oklch(99% 0.005 25);
 }
 
-/* Dark mode overrides */
+/* ── Dark Theme ───────────────────────────────────── */
 [data-theme="dark"] {
-    --color-primary: oklch(65% 0.15 240);
-    --color-base-100: oklch(20% 0.02 260);
-    --color-base-200: oklch(25% 0.02 260);
-    --color-base-300: oklch(30% 0.02 260);
-    --color-base-content: oklch(90% 0.01 260);
+    --color-primary: oklch(62% 0.1 195);
+    --color-primary-content: oklch(15% 0.02 200);
+    --color-secondary: oklch(55% 0.09 200);
+    --color-secondary-content: oklch(99% 0.005 200);
+    --color-accent: oklch(60% 0.06 185);
+    --color-accent-content: oklch(99% 0.005 185);
+    --color-neutral: oklch(25% 0.015 210);
+    --color-neutral-content: oklch(92% 0.005 200);
+    --color-base-100: oklch(17% 0.015 215);
+    --color-base-200: oklch(21% 0.015 215);
+    --color-base-300: oklch(26% 0.015 215);
+    --color-base-content: oklch(92% 0.006 200);
+    --color-info: oklch(65% 0.16 245);
+    --color-success: oklch(70% 0.17 155);
+    --color-warning: oklch(80% 0.15 75);
+    --color-error: oklch(65% 0.22 25);
 }
 
-/* Custom SMART K3 Styles */
-@layer components {
-
-    /* Sidebar */
-    .sidebar {
-        @apply bg-base-200 min-h-screen w-64 fixed left-0 top-0 z-40 transition-transform duration-300;
-    }
-
-    .sidebar-collapsed {
-        @apply -translate-x-full lg:translate-x-0;
-    }
-
-    /* Main Content */
-    .main-content {
-        @apply lg:ml-64 min-h-screen bg-base-100 transition-all duration-300;
-    }
-
-    /* Status Badges */
-    .status-badge {
-        @apply badge badge-sm font-medium;
-    }
-
-    .status-aktif {
-        @apply badge-success;
-    }
-
-    .status-rusak {
-        @apply badge-error;
-    }
-
-    .status-expired {
-        @apply badge-warning;
-    }
-
-    .status-maintenance {
-        @apply badge-info;
-    }
-
-    /* Stat Cards */
-    .stat-card {
-        @apply bg-base-100 rounded-2xl shadow-lg p-6 border border-base-300;
-    }
-
-    /* Data Tables */
-    .data-table {
-        @apply table table-zebra w-full;
-    }
-
-    .data-table th {
-        @apply bg-base-200 text-base-content font-semibold;
-    }
-
-    /* Form Styles */
-    .form-section {
-        @apply bg-base-100 rounded-2xl shadow-sm p-6 mb-6;
-    }
-
-    .form-section-title {
-        @apply text-lg font-semibold mb-4 pb-2 border-b border-base-300;
-    }
-
-    /* APAR Card */
-    .apar-card {
-        @apply card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300;
-    }
-
-    /* Inspection Checklist */
-    .checklist-item {
-        @apply flex items-center gap-3 p-3 rounded-xl hover:bg-base-200 transition-colors;
-    }
-
-    .checklist-item.checked {
-        @apply bg-success/10;
-    }
-
-    .checklist-item.unchecked {
-        @apply bg-error/10;
-    }
-
-    /* Login Card */
-    .login-card {
-        @apply bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20;
-    }
-
-    /* Glass Effect */
-    .glass-card {
-        @apply bg-white/60 backdrop-blur-lg rounded-2xl border border-white/30 shadow-xl;
-    }
-
-    /* Gradient Button */
-    .btn-gradient {
-        @apply bg-gradient-to-r from-primary to-secondary text-white border-0 hover:opacity-90 transition-all duration-300;
-    }
-
-    /* Input Focus Effect */
-    .input-modern {
-        @apply bg-base-200/50 border-base-300 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-xl;
-    }
-
-    /* Floating Label Style */
-    .floating-input {
-        @apply relative;
-    }
-}
-
-/* Custom Animations */
+/* ── Utilities ─────────────────────────────────────── */
 @layer utilities {
     .animate-fade-in {
         animation: fadeIn 0.5s ease-out;
     }
-
     .animate-slide-up {
-        animation: slideUp 0.6s ease-out;
+        animation: slideUp 0.5s ease-out;
     }
-
     .animate-float {
         animation: float 6s ease-in-out infinite;
-    }
-
-    .animate-pulse-soft {
-        animation: pulseSoft 3s ease-in-out infinite;
     }
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
-
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-18px); }
 }
 
-@keyframes pulseSoft {
+/* ── Loading bar ──────────────────────────────────── */
+.loading-progress-bar {
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px oklch(50% 0.1 195 / 0.5),
+                0 0  5px oklch(50% 0.1 195 / 0.3);
+    position: relative;
+}
+.loading-progress-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
 
-    0%,
-    100% {
-        opacity: 0.8;
-    }
-
-    50% {
-        opacity: 1;
-    }
+/* ── Page transition ──────────────────────────────── */
+.drawer-content main {
+    animation: pageIn 0.25s ease-out;
+}
+@keyframes pageIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }

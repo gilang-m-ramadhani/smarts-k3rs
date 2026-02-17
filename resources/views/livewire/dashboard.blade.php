@@ -1,342 +1,219 @@
 <div>
-    <!-- Page Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+    {{-- Page Header --}}
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-            <h1 class="text-2xl font-bold text-base-content">Dashboard</h1>
-            <p class="text-base-content/60">Selamat datang di SMART K3 - Sistem Manajemen APAR</p>
+            <h1 class="text-2xl font-bold">Dashboard</h1>
+            <p class="text-base-content/50 text-sm">Selamat datang di SMART K3 — Sistem Manajemen APAR</p>
         </div>
-        <div class="flex flex-wrap items-center gap-2 mt-4 md:mt-0">
-            <span class="badge badge-lg">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
-            <div class="divider divider-horizontal mx-0 hidden md:flex"></div>
-            <a href="{{ route('inspeksi.create') }}" class="btn btn-sm btn-primary gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-                Buat Inspeksi
-            </a>
-            <a href="{{ route('apar.create') }}" class="btn btn-sm btn-secondary gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Tambah APAR
-            </a>
+        <div class="flex items-center gap-2">
+            <span class="badge badge-lg badge-ghost">{{ now()->locale('id')->isoFormat('dddd, D MMMM Y') }}</span>
         </div>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <!-- Total APAR -->
-        <a href="{{ route('apar.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-base-content/60 text-sm">Total APAR</p>
-                    <p class="text-3xl font-bold text-primary">{{ $totalApar }}</p>
+    {{-- Statistics Cards --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <a href="{{ route('apar.index') }}" class="card bg-base-100 shadow-sm border border-base-300/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+            <div class="card-body p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-base-content/50 text-xs font-medium uppercase tracking-wider">Total APAR</p>
+                        <p class="text-3xl font-extrabold text-primary mt-1">{{ $totalApar }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary group-hover:text-primary-content" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+                    </div>
                 </div>
-                <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-primary group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
-                    </svg>
+                <div class="flex items-center gap-2 mt-3">
+                    <span class="badge badge-success badge-xs gap-1">{{ $aparAktif }} Aktif</span>
+                    <span class="badge badge-error badge-xs gap-1">{{ $aparRusak }} Rusak</span>
                 </div>
-            </div>
-            <div class="flex items-center gap-2 mt-4 text-sm">
-                <span class="badge badge-success badge-sm">{{ $aparAktif }} Aktif</span>
-                <span class="badge badge-error badge-sm">{{ $aparRusak }} Rusak</span>
             </div>
         </a>
 
-        <!-- Inspeksi Bulan Ini -->
-        <a href="{{ route('inspeksi.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-base-content/60 text-sm">Inspeksi Bulan Ini</p>
-                    <p class="text-3xl font-bold text-info">{{ $inspeksiBulanIni }}</p>
+        <a href="{{ route('inspeksi.index') }}" class="card bg-base-100 shadow-sm border border-base-300/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+            <div class="card-body p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-base-content/50 text-xs font-medium uppercase tracking-wider">Inspeksi Bulan Ini</p>
+                        <p class="text-3xl font-extrabold text-info mt-1">{{ $inspeksiBulanIni }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-info/10 flex items-center justify-center group-hover:bg-info group-hover:scale-110 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-info group-hover:text-info-content" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    </div>
                 </div>
-                <div class="w-14 h-14 rounded-full bg-info/10 flex items-center justify-center group-hover:bg-info group-hover:text-white transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-info group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
+                <div class="mt-3">
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="text-base-content/50">Progress</span>
+                        <span class="font-semibold">{{ $complianceRate }}%</span>
+                    </div>
+                    <progress class="progress progress-info w-full h-2" value="{{ $complianceRate }}" max="100"></progress>
                 </div>
-            </div>
-            <div class="mt-4">
-                <div class="flex justify-between text-sm mb-1">
-                    <span>Progress</span>
-                    <span>{{ $complianceRate }}%</span>
-                </div>
-                <progress class="progress progress-info w-full" value="{{ $complianceRate }}" max="100"></progress>
             </div>
         </a>
 
-        <!-- Maintenance Pending -->
-        <a href="{{ route('maintenance.index') }}" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-base-content/60 text-sm">Maintenance Pending</p>
-                    <p class="text-3xl font-bold text-warning">{{ $maintenancePending }}</p>
+        <a href="{{ route('maintenance.index') }}" class="card bg-base-100 shadow-sm border border-base-300/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 group">
+            <div class="card-body p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-base-content/50 text-xs font-medium uppercase tracking-wider">Maintenance Pending</p>
+                        <p class="text-3xl font-extrabold text-warning mt-1">{{ $maintenancePending }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-warning/10 flex items-center justify-center group-hover:bg-warning group-hover:scale-110 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-warning group-hover:text-warning-content" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
                 </div>
-                <div class="w-14 h-14 rounded-full bg-warning/10 flex items-center justify-center group-hover:bg-warning group-hover:text-white transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-warning group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-warning group-hover:font-medium">
-                <span>Lihat Detail</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
             </div>
         </a>
 
-        <!-- APAR Expired -->
-        <a href="{{ route('apar.index') }}?status=expired" class="stat-card group hover:scale-[1.02] transition-all duration-200 cursor-pointer hover:shadow-xl {{ $aparExpired > 0 ? 'ring-2 ring-error/30' : '' }}">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-base-content/60 text-sm">APAR Expired</p>
-                    <p class="text-3xl font-bold text-error">{{ $aparExpired }}</p>
-                </div>
-                <div class="w-14 h-14 rounded-full bg-error/10 flex items-center justify-center group-hover:bg-error group-hover:text-white transition-all {{ $aparExpired > 0 ? 'animate-pulse' : '' }}">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-error group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                </div>
-            </div>
-            <div class="mt-4 flex items-center gap-2 text-sm text-error group-hover:font-medium">
-                <span>Perlu Tindakan</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </div>
-        </a>
-    </div>
-
-    <!-- Charts Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Status Chart -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <h2 class="card-title text-lg">Status APAR</h2>
-                <div id="statusChart" class="h-72"></div>
-            </div>
-        </div>
-
-        <!-- Tipe Chart -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <h2 class="card-title text-lg">APAR Berdasarkan Tipe</h2>
-                <div id="tipeChart" class="h-72"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tables Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <!-- Recent Inspeksi -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="card-title text-lg">Inspeksi Terbaru</h2>
-                    <a href="{{ route('inspeksi.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>APAR</th>
-                                <th>Tanggal</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($recentInspeksi as $inspeksi)
-                            <tr>
-                                <td>
-                                    <div class="font-medium">{{ $inspeksi->apar->id_apar }}</div>
-                                    <div class="text-xs text-base-content/60">{{ $inspeksi->apar->lokasi->nama_lokasi ?? '-' }}</div>
-                                </td>
-                                <td>{{ $inspeksi->tanggal_inspeksi->format('d/m/Y') }}</td>
-                                <td>
-                                    <span class="badge {{ $inspeksi->overall_status_badge }} badge-sm">
-                                        {{ ucfirst($inspeksi->overall_status) }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-base-content/60">Belum ada data inspeksi</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- APAR Akan Expired -->
-        <div class="card bg-base-100 shadow-lg">
-            <div class="card-body">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="card-title text-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        APAR Akan Expired (30 Hari)
-                    </h2>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th>APAR</th>
-                                <th>Lokasi</th>
-                                <th>Expired</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($expiringApar as $apar)
-                            <tr>
-                                <td>
-                                    <div class="font-medium">{{ $apar->id_apar }}</div>
-                                    <div class="text-xs text-base-content/60">{{ $apar->merk }} - {{ strtoupper($apar->tipe_apar) }}</div>
-                                </td>
-                                <td>{{ $apar->lokasi->nama_lokasi ?? '-' }}</td>
-                                <td>
-                                    <span class="text-warning font-medium">{{ $apar->tanggal_expire->format('d/m/Y') }}</span>
-                                    <div class="text-xs text-base-content/60">{{ $apar->days_until_expire }} hari lagi</div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="3" class="text-center text-base-content/60">Tidak ada APAR yang akan expired</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+        <div class="card bg-base-100 shadow-sm border border-base-300/50 {{ $aparExpired > 0 ? 'ring-2 ring-error/20' : '' }}">
+            <div class="card-body p-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-base-content/50 text-xs font-medium uppercase tracking-wider">APAR Expired</p>
+                        <p class="text-3xl font-extrabold text-error mt-1">{{ $aparExpired }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-error/10 flex items-center justify-center {{ $aparExpired > 0 ? 'animate-pulse' : '' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-error" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Upcoming Maintenance -->
-    <div class="card bg-base-100 shadow-lg">
+    {{-- Charts Row --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        <div class="card bg-base-100 shadow-sm border border-base-300/50">
+            <div class="card-body">
+                <h2 class="card-title text-base font-bold">Status APAR</h2>
+                <div id="statusChart"></div>
+            </div>
+        </div>
+        <div class="card bg-base-100 shadow-sm border border-base-300/50">
+            <div class="card-body">
+                <h2 class="card-title text-base font-bold">APAR Berdasarkan Tipe</h2>
+                <div id="tipeChart"></div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Recent Inspeksi --}}
+    <div class="card bg-base-100 shadow-sm border border-base-300/50 mb-6">
         <div class="card-body">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="card-title text-lg">Jadwal Maintenance</h2>
-                <a href="{{ route('maintenance.index') }}" class="btn btn-ghost btn-sm">Lihat Semua</a>
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="card-title text-base font-bold">Inspeksi Terbaru</h2>
+                <a href="{{ route('inspeksi.index') }}" class="btn btn-ghost btn-xs">Lihat Semua →</a>
             </div>
             <div class="overflow-x-auto">
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
-                        <tr>
-                            <th>No. WO</th>
-                            <th>APAR</th>
-                            <th>Tipe</th>
-                            <th>Teknisi</th>
-                            <th>Jadwal</th>
-                            <th>Status</th>
-                        </tr>
+                        <tr><th>APAR</th><th>Tanggal</th><th>Inspektor</th><th>Tekanan</th></tr>
                     </thead>
                     <tbody>
-                        @forelse($upcomingMaintenance as $wo)
+                        @forelse($recentInspeksi as $inspeksi)
                         <tr>
-                            <td class="font-mono">{{ $wo->wo_number }}</td>
                             <td>
-                                <div class="font-medium">{{ $wo->apar->id_apar }}</div>
-                                <div class="text-xs text-base-content/60">{{ $wo->apar->lokasi->nama_lokasi ?? '-' }}</div>
+                                <div class="font-medium text-sm">{{ $inspeksi->apar->id_apar }}</div>
+                                <div class="text-xs text-base-content/50">{{ $inspeksi->apar->lokasi->nama_lokasi ?? '-' }}</div>
                             </td>
+                            <td class="text-sm">{{ $inspeksi->tanggal_inspeksi->format('d/m/Y') }}</td>
+                            <td class="text-sm">{{ $inspeksi->user->name ?? '-' }}</td>
                             <td>
-                                <span class="badge badge-outline badge-sm">{{ $wo->maintenance_type_label }}</span>
-                            </td>
-                            <td>{{ $wo->teknisi->name ?? 'Belum ditentukan' }}</td>
-                            <td>{{ $wo->scheduled_date->format('d/m/Y') }}</td>
-                            <td>
-                                <span class="badge {{ $wo->status_badge }} badge-sm">
-                                    {{ ucfirst(str_replace('_', ' ', $wo->status)) }}
-                                </span>
+                                <span class="badge badge-sm
+                                    {{ $inspeksi->pressure_status === 'hijau' ? 'badge-success' : '' }}
+                                    {{ $inspeksi->pressure_status === 'kuning' ? 'badge-warning' : '' }}
+                                    {{ $inspeksi->pressure_status === 'merah' ? 'badge-error' : '' }}
+                                ">{{ ucfirst($inspeksi->pressure_status) }}</span>
                             </td>
                         </tr>
                         @empty
-                        <tr>
-                            <td colspan="6" class="text-center text-base-content/60">Tidak ada jadwal maintenance</td>
-                        </tr>
+                        <tr><td colspan="4" class="text-center text-base-content/40 py-6">Belum ada data inspeksi</td></tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    {{-- Expiring APAR --}}
+    @if($expiringApar->count() > 0)
+    <div class="card bg-base-100 shadow-sm border border-base-300/50">
+        <div class="card-body">
+            <div class="flex items-center gap-2 mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                <h2 class="card-title text-base font-bold">APAR Akan Expired (30 Hari)</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="table table-sm">
+                    <thead>
+                        <tr><th>APAR</th><th>Lokasi</th><th>Tipe</th><th>Expired</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach($expiringApar as $apar)
+                        <tr>
+                            <td class="font-medium text-sm">{{ $apar->id_apar }}</td>
+                            <td class="text-sm">{{ $apar->lokasi->nama_lokasi ?? '-' }}</td>
+                            <td><span class="badge badge-outline badge-sm">{{ strtoupper($apar->tipe_apar) }}</span></td>
+                            <td>
+                                <span class="text-warning font-semibold text-sm">{{ $apar->tanggal_expire->format('d/m/Y') }}</span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Status Chart (Donut)
-    var statusOptions = {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'smartk3dark';
+    const textColor = isDark ? '#cfe8ec' : '#2a4a52';
+
+    // Status Chart (Donut) — pastel teal palette + white borders
+    new ApexCharts(document.querySelector("#statusChart"), {
         series: @json(collect($aparByStatus)->pluck('count')),
         labels: @json(collect($aparByStatus)->pluck('status')),
-        colors: @json(collect($aparByStatus)->pluck('color')),
-        chart: {
-            type: 'donut',
-            height: 280,
-        },
-        legend: {
-            position: 'bottom'
-        },
+        colors: ['#7AB2B2', '#088395', '#09637E', '#EBF4F6'],
+        chart: { type: 'donut', height: 300, background: 'transparent', foreColor: textColor },
+        stroke: { colors: ['#fff'], width: 3 },
+        dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700 } },
         plotOptions: {
             pie: {
                 donut: {
                     size: '60%',
                     labels: {
                         show: true,
-                        total: {
-                            show: true,
-                            label: 'Total APAR',
-                            formatter: function () {
-                                return '{{ $totalApar }}'
-                            }
-                        }
+                        total: { show: true, label: 'Total', color: textColor, fontSize: '14px',
+                            formatter: function() { return '{{ $totalApar }}'; }
+                        },
+                        value: { fontSize: '24px', fontWeight: 800, color: textColor }
                     }
                 }
             }
         },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: { width: 300 },
-                legend: { position: 'bottom' }
-            }
-        }]
-    };
-    var statusChart = new ApexCharts(document.querySelector("#statusChart"), statusOptions);
-    statusChart.render();
+        legend: { position: 'bottom', fontSize: '13px', labels: { colors: textColor } }
+    }).render();
 
-    // Tipe Chart (Bar)
-    var tipeOptions = {
-        series: [{
-            name: 'Jumlah',
-            data: @json(collect($aparByTipe)->pluck('count'))
-        }],
-        chart: {
-            type: 'bar',
-            height: 280,
-            toolbar: { show: false }
-        },
-        colors: ['#dc2626', '#f97316', '#fbbf24', '#22c55e'],
+    // Tipe Chart (Bar) — pastel teal colors + white lines
+    new ApexCharts(document.querySelector("#tipeChart"), {
+        series: [{ name: 'Jumlah', data: @json(collect($aparByTipe)->pluck('count')) }],
+        chart: { type: 'bar', height: 300, toolbar: { show: false }, background: 'transparent', foreColor: textColor },
+        colors: ['#09637E', '#088395', '#7AB2B2', '#c5e4e7'],
         plotOptions: {
-            bar: {
-                borderRadius: 8,
-                horizontal: false,
-                distributed: true,
-            }
+            bar: { borderRadius: 8, horizontal: false, distributed: true, columnWidth: '55%' }
         },
-        dataLabels: { enabled: false },
+        dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700, colors: ['#fff'] } },
         xaxis: {
-            categories: @json(collect($aparByTipe)->pluck('tipe'))
+            categories: @json(collect($aparByTipe)->pluck('tipe')),
+            labels: { style: { colors: textColor, fontSize: '12px' } }
         },
+        yaxis: { labels: { style: { colors: textColor } } },
+        grid: { borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', strokeDashArray: 4 },
         legend: { show: false }
-    };
-    var tipeChart = new ApexCharts(document.querySelector("#tipeChart"), tipeOptions);
-    tipeChart.render();
+    }).render();
 });
 </script>
 @endpush

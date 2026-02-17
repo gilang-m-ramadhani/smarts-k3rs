@@ -21,6 +21,8 @@ class Maintenance extends Model // implements Auditable
         'id_apar',
         'teknisi_id',
         'supervisor_id',
+        'assigned_to',
+        'created_by',
         'scheduled_date',
         'completed_date',
         'maintenance_type',
@@ -33,6 +35,7 @@ class Maintenance extends Model // implements Auditable
         'approval_date',
         'approval_notes',
         'status',
+        'priority',
     ];
 
     protected $casts = [
