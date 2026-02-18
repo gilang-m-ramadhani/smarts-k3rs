@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Apar;
 use App\Models\Inspeksi;
 use App\Models\Maintenance;
-use App\Models\Lokasi;
+use Illuminate\Support\Facades\Cache;
 
 class Dashboard extends Component
 {
@@ -33,19 +33,41 @@ class Dashboard extends Component
 
     public function loadStatistics()
     {
-        $this->totalApar = Apar::count();
-        $this->aparAktif = Apar::where('status', 'aktif')->count();
-        $this->aparRusak = Apar::where('status', 'rusak')->count();
-        $this->aparExpired = Apar::where('status', 'expired')->count();
-        $this->aparMaintenance = Apar::where('status', 'maintenance')->count();
+        // Cache statistik selama 2 menit — satu query aggregat alih-alih 5 query terpisah
+        $stats = Cache::remember('dashboard:stats', 120, function () {
+            $statusCounts = Apar::selectRaw("
+                COUNT(*) as total,
+                SUM(CASE WHEN status = 'aktif' THEN 1 ELSE 0 END) as aktif,
+                SUM(CASE WHEN status = 'rusak' THEN 1 ELSE 0 END) as rusak,
+                SUM(CASE WHEN status = 'expired' THEN 1 ELSE 0 END) as expired,
+                SUM(CASE WHEN status = 'maintenance' THEN 1 ELSE 0 END) as maintenance
+            ")->first();
 
-        $this->inspeksiBulanIni = Inspeksi::whereMonth('tanggal_inspeksi', now()->month)
-            ->whereYear('tanggal_inspeksi', now()->year)
-            ->count();
+            $inspeksiBulanIni = Inspeksi::whereMonth('tanggal_inspeksi', now()->month)
+                ->whereYear('tanggal_inspeksi', now()->year)
+                ->count();
 
-        $this->maintenancePending = Maintenance::whereIn('status', ['pending', 'in_progress'])->count();
+            $maintenancePending = Maintenance::whereIn('status', ['pending', 'in_progress'])->count();
 
-        // Calculate compliance rate
+            return [
+                'total' => (int) $statusCounts->total,
+                'aktif' => (int) $statusCounts->aktif,
+                'rusak' => (int) $statusCounts->rusak,
+                'expired' => (int) $statusCounts->expired,
+                'maintenance' => (int) $statusCounts->maintenance,
+                'inspeksi_bulan_ini' => $inspeksiBulanIni,
+                'maintenance_pending' => $maintenancePending,
+            ];
+        });
+
+        $this->totalApar = $stats['total'];
+        $this->aparAktif = $stats['aktif'];
+        $this->aparRusak = $stats['rusak'];
+        $this->aparExpired = $stats['expired'];
+        $this->aparMaintenance = $stats['maintenance'];
+        $this->inspeksiBulanIni = $stats['inspeksi_bulan_ini'];
+        $this->maintenancePending = $stats['maintenance_pending'];
+
         $this->complianceRate = $this->totalApar > 0 
             ? round(($this->inspeksiBulanIni / $this->totalApar) * 100, 1) 
             : 0;
@@ -53,44 +75,51 @@ class Dashboard extends Component
 
     public function loadRecentData()
     {
-        $this->recentInspeksi = Inspeksi::with(['apar.lokasi', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->take(5)
-            ->get();
+        // Cache recent data selama 1 menit
+        $recent = Cache::remember('dashboard:recent', 60, function () {
+            return [
+                'inspeksi' => Inspeksi::with(['apar:id_apar,id_lokasi,tipe_apar', 'apar.lokasi:id_lokasi,nama_lokasi', 'user:id,name'])
+                    ->orderBy('created_at', 'desc')
+                    ->take(5)
+                    ->get(),
+                'maintenance' => Maintenance::with(['apar:id_apar,id_lokasi,tipe_apar', 'apar.lokasi:id_lokasi,nama_lokasi', 'teknisi:id,name'])
+                    ->whereIn('status', ['pending', 'in_progress'])
+                    ->orderBy('scheduled_date', 'asc')
+                    ->take(5)
+                    ->get(),
+                'expiring' => Apar::with('lokasi:id_lokasi,nama_lokasi')
+                    ->where('status', 'aktif')
+                    ->whereBetween('tanggal_expire', [now(), now()->addDays(30)])
+                    ->orderBy('tanggal_expire', 'asc')
+                    ->take(5)
+                    ->get(),
+            ];
+        });
 
-        $this->upcomingMaintenance = Maintenance::with(['apar.lokasi', 'teknisi'])
-            ->whereIn('status', ['pending', 'in_progress'])
-            ->orderBy('scheduled_date', 'asc')
-            ->take(5)
-            ->get();
-
-        $this->expiringApar = Apar::with('lokasi')
-            ->where('status', 'aktif')
-            ->whereBetween('tanggal_expire', [now(), now()->addDays(30)])
-            ->orderBy('tanggal_expire', 'asc')
-            ->take(5)
-            ->get();
+        $this->recentInspeksi = $recent['inspeksi'];
+        $this->upcomingMaintenance = $recent['maintenance'];
+        $this->expiringApar = $recent['expiring'];
     }
 
     public function loadChartData()
     {
         $this->aparByStatus = [
-            ['status' => 'Aktif', 'count' => $this->aparAktif, 'color' => '#22c55e'],
-            ['status' => 'Rusak', 'count' => $this->aparRusak, 'color' => '#ef4444'],
-            ['status' => 'Expired', 'count' => $this->aparExpired, 'color' => '#f59e0b'],
-            ['status' => 'Maintenance', 'count' => $this->aparMaintenance, 'color' => '#3b82f6'],
+            ['status' => 'Aktif', 'count' => $this->aparAktif, 'color' => '#86EFAC'],
+            ['status' => 'Rusak', 'count' => $this->aparRusak, 'color' => '#FDA4AF'],
+            ['status' => 'Expired', 'count' => $this->aparExpired, 'color' => '#FDE68A'],
+            ['status' => 'Maintenance', 'count' => $this->aparMaintenance, 'color' => '#7DD3FC'],
         ];
 
-        $this->aparByTipe = Apar::selectRaw('tipe_apar, COUNT(*) as count')
-            ->groupBy('tipe_apar')
-            ->get()
-            ->map(function ($item) {
-                return [
+        $this->aparByTipe = Cache::remember('dashboard:tipe', 120, function () {
+            return Apar::selectRaw('tipe_apar, COUNT(*) as count')
+                ->groupBy('tipe_apar')
+                ->get()
+                ->map(fn ($item) => [
                     'tipe' => strtoupper($item->tipe_apar),
                     'count' => $item->count,
-                ];
-            })
-            ->toArray();
+                ])
+                ->toArray();
+        });
     }
 
     public function render()

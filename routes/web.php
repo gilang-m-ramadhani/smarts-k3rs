@@ -21,16 +21,16 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 |--------------------------------------------------------------------------
 */
 
-// Auth Routes
+// Auth Routes — rate-limited: 5 percobaan login per menit
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Protected Routes
-Route::middleware('auth')->group(function () {
+// Protected Routes — rate-limited: 60 request per menit per user
+Route::middleware(['auth', 'throttle:web'])->group(function () {
     // Dashboard
     Route::get('/', Dashboard::class)->name('dashboard');
 

@@ -28,8 +28,9 @@
                             <th>Nama Lokasi</th>
                             <th>Gedung</th>
                             <th>Lantai</th>
+                            <th>Ruangan</th>
                             <th>Jumlah APAR</th>
-                            <th>Status</th>
+                            <th>Risiko</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -39,10 +40,19 @@
                             <td class="font-medium">{{ $lokasi->nama_lokasi }}</td>
                             <td class="text-sm">{{ $lokasi->gedung ?? '-' }}</td>
                             <td class="text-sm">{{ $lokasi->lantai ?? '-' }}</td>
+                            <td class="text-sm">{{ $lokasi->ruangan ?? '-' }}</td>
                             <td><span class="badge badge-primary badge-sm">{{ $lokasi->apar_count ?? 0 }} APAR</span></td>
                             <td>
-                                <span class="badge badge-sm {{ $lokasi->is_active ? 'badge-success' : 'badge-ghost' }}">
-                                    {{ $lokasi->is_active ? 'Aktif' : 'Nonaktif' }}
+                                @php
+                                    $riskBadge = match($lokasi->kategori_risiko) {
+                                        'rendah' => 'badge-success',
+                                        'sedang' => 'badge-warning',
+                                        'tinggi' => 'badge-error',
+                                        default => 'badge-ghost',
+                                    };
+                                @endphp
+                                <span class="badge badge-sm {{ $riskBadge }}">
+                                    {{ ucfirst($lokasi->kategori_risiko ?? 'sedang') }}
                                 </span>
                             </td>
                             <td>
@@ -57,7 +67,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr><td colspan="6" class="text-center py-8 text-base-content/40">Tidak ada data lokasi</td></tr>
+                        <tr><td colspan="7" class="text-center py-8 text-base-content/40">Tidak ada data lokasi</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -79,22 +89,39 @@
                     <input type="text" wire:model="nama_lokasi" class="input input-bordered" required />
                     @error('nama_lokasi') <div class="label"><span class="label-text-alt text-error text-xs">{{ $message }}</span></div> @enderror
                 </label>
-                <label class="form-control w-full">
-                    <div class="label"><span class="label-text font-medium">Gedung</span></div>
-                    <input type="text" wire:model="gedung" class="input input-bordered" />
-                </label>
-                <label class="form-control w-full">
-                    <div class="label"><span class="label-text font-medium">Lantai</span></div>
-                    <input type="text" wire:model="lantai" class="input input-bordered" />
-                </label>
-                <label class="form-control w-full">
-                    <div class="label"><span class="label-text font-medium">Keterangan</span></div>
-                    <textarea wire:model="keterangan" class="textarea textarea-bordered" placeholder="Keterangan tambahan..."></textarea>
-                </label>
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" wire:model="is_active" class="toggle toggle-primary toggle-sm" />
-                    <span class="label-text">Aktif</span>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="form-control w-full">
+                        <div class="label"><span class="label-text font-medium">Gedung <span class="text-error">*</span></span></div>
+                        <input type="text" wire:model="gedung" class="input input-bordered" required />
+                        @error('gedung') <div class="label"><span class="label-text-alt text-error text-xs">{{ $message }}</span></div> @enderror
+                    </label>
+                    <label class="form-control w-full">
+                        <div class="label"><span class="label-text font-medium">Lantai <span class="text-error">*</span></span></div>
+                        <input type="text" wire:model="lantai" class="input input-bordered" required />
+                        @error('lantai') <div class="label"><span class="label-text-alt text-error text-xs">{{ $message }}</span></div> @enderror
+                    </label>
                 </div>
+                <label class="form-control w-full">
+                    <div class="label"><span class="label-text font-medium">Ruangan <span class="text-error">*</span></span></div>
+                    <input type="text" wire:model="ruangan" class="input input-bordered" required />
+                    @error('ruangan') <div class="label"><span class="label-text-alt text-error text-xs">{{ $message }}</span></div> @enderror
+                </label>
+                <label class="form-control w-full">
+                    <div class="label"><span class="label-text font-medium">Koordinat</span></div>
+                    <input type="text" wire:model="koordinat" class="input input-bordered" placeholder="contoh: -6.9175, 107.6191" />
+                </label>
+                <label class="form-control w-full">
+                    <div class="label"><span class="label-text font-medium">Kategori Risiko</span></div>
+                    <select wire:model="kategori_risiko" class="select select-bordered">
+                        <option value="rendah">Rendah</option>
+                        <option value="sedang">Sedang</option>
+                        <option value="tinggi">Tinggi</option>
+                    </select>
+                </label>
+                <label class="form-control w-full">
+                    <div class="label"><span class="label-text font-medium">Deskripsi</span></div>
+                    <textarea wire:model="deskripsi" class="textarea textarea-bordered" placeholder="Keterangan tambahan..."></textarea>
+                </label>
                 <div class="modal-action">
                     <button type="button" wire:click="closeModal" class="btn btn-ghost">Batal</button>
                     <button type="submit" class="btn btn-primary">

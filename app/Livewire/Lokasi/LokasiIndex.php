@@ -52,6 +52,22 @@ class LokasiIndex extends Component
         $this->showModal = true;
     }
 
+    public function openCreateModal()
+    {
+        $this->openModal();
+    }
+
+    public function openEditModal($id)
+    {
+        $this->openModal($id);
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+        $this->resetForm();
+    }
+
     public function resetForm()
     {
         $this->editMode = false;

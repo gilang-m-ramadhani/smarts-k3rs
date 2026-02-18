@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="smartk3">
+<script>
+    (function(){
+        var t = localStorage.getItem('smartk3-theme');
+        if (t) document.documentElement.setAttribute('data-theme', t);
+    })();
+</script>
 
 <head>
     <meta charset="utf-8">

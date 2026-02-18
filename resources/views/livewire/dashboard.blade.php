@@ -24,8 +24,8 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 mt-3">
-                    <span class="badge badge-success badge-xs gap-1">{{ $aparAktif }} Aktif</span>
-                    <span class="badge badge-error badge-xs gap-1">{{ $aparRusak }} Rusak</span>
+                    <span class="badge badge-xs gap-1 status-aktif">{{ $aparAktif }} Aktif</span>
+                    <span class="badge badge-xs gap-1 status-rusak">{{ $aparRusak }} Rusak</span>
                 </div>
             </div>
         </a>
@@ -169,51 +169,79 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'smartk3dark';
-    const textColor = isDark ? '#cfe8ec' : '#2a4a52';
+    let statusChart, tipeChart;
 
-    // Status Chart (Donut) — pastel teal palette + white borders
-    new ApexCharts(document.querySelector("#statusChart"), {
-        series: @json(collect($aparByStatus)->pluck('count')),
-        labels: @json(collect($aparByStatus)->pluck('status')),
-        colors: ['#7AB2B2', '#088395', '#09637E', '#EBF4F6'],
-        chart: { type: 'donut', height: 300, background: 'transparent', foreColor: textColor },
-        stroke: { colors: ['#fff'], width: 3 },
-        dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700 } },
-        plotOptions: {
-            pie: {
-                donut: {
-                    size: '60%',
-                    labels: {
-                        show: true,
-                        total: { show: true, label: 'Total', color: textColor, fontSize: '14px',
-                            formatter: function() { return '{{ $totalApar }}'; }
-                        },
-                        value: { fontSize: '24px', fontWeight: 800, color: textColor }
+    function getThemeColors() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'smartk3dark';
+        return {
+            textColor: isDark ? '#cfe8ec' : '#2a4a52',
+            gridColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+            strokeColor: isDark ? '#162428' : '#ffffff',
+        };
+    }
+
+    function renderCharts() {
+        if (statusChart) statusChart.destroy();
+        if (tipeChart) tipeChart.destroy();
+
+        const { textColor, gridColor, strokeColor } = getThemeColors();
+
+        // Status Chart (Donut)
+        statusChart = new ApexCharts(document.querySelector("#statusChart"), {
+            series: @json(collect($aparByStatus)->pluck('count')),
+            labels: @json(collect($aparByStatus)->pluck('status')),
+            colors: ['#86EFAC', '#FDA4AF', '#FDE68A', '#7DD3FC'],
+            chart: { type: 'donut', height: 300, background: 'transparent', foreColor: textColor },
+            stroke: { colors: [strokeColor], width: 3 },
+            dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700 } },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        size: '60%',
+                        labels: {
+                            show: true,
+                            total: { show: true, label: 'Total', color: textColor, fontSize: '14px',
+                                formatter: function() { return '{{ $totalApar }}'; }
+                            },
+                            value: { fontSize: '24px', fontWeight: 800, color: textColor }
+                        }
                     }
                 }
-            }
-        },
-        legend: { position: 'bottom', fontSize: '13px', labels: { colors: textColor } }
-    }).render();
+            },
+            legend: { position: 'bottom', fontSize: '13px', labels: { colors: textColor } }
+        });
+        statusChart.render();
 
-    // Tipe Chart (Bar) — pastel teal colors + white lines
-    new ApexCharts(document.querySelector("#tipeChart"), {
-        series: [{ name: 'Jumlah', data: @json(collect($aparByTipe)->pluck('count')) }],
-        chart: { type: 'bar', height: 300, toolbar: { show: false }, background: 'transparent', foreColor: textColor },
-        colors: ['#09637E', '#088395', '#7AB2B2', '#c5e4e7'],
-        plotOptions: {
-            bar: { borderRadius: 8, horizontal: false, distributed: true, columnWidth: '55%' }
-        },
-        dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700, colors: ['#fff'] } },
-        xaxis: {
-            categories: @json(collect($aparByTipe)->pluck('tipe')),
-            labels: { style: { colors: textColor, fontSize: '12px' } }
-        },
-        yaxis: { labels: { style: { colors: textColor } } },
-        grid: { borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', strokeDashArray: 4 },
-        legend: { show: false }
-    }).render();
+        // Tipe Chart (Bar)
+        tipeChart = new ApexCharts(document.querySelector("#tipeChart"), {
+            series: [{ name: 'Jumlah', data: @json(collect($aparByTipe)->pluck('count')) }],
+            chart: { type: 'bar', height: 300, toolbar: { show: false }, background: 'transparent', foreColor: textColor },
+            colors: ['#09637E', '#088395', '#7AB2B2', '#c5e4e7'],
+            plotOptions: {
+                bar: { borderRadius: 8, horizontal: false, distributed: true, columnWidth: '55%' }
+            },
+            dataLabels: { enabled: true, style: { fontSize: '14px', fontWeight: 700, colors: ['#fff'] } },
+            xaxis: {
+                categories: @json(collect($aparByTipe)->pluck('tipe')),
+                labels: { style: { colors: textColor, fontSize: '12px' } }
+            },
+            yaxis: { labels: { style: { colors: textColor } } },
+            grid: { borderColor: gridColor, strokeDashArray: 4 },
+            legend: { show: false }
+        });
+        tipeChart.render();
+    }
+
+    // Initial render
+    renderCharts();
+
+    // Re-render charts when theme changes
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', function() {
+            setTimeout(renderCharts, 100);
+        });
+    }
 });
 </script>
 @endpush

@@ -17,17 +17,17 @@
             <p class="text-xs text-base-content/50 uppercase tracking-wider">Total</p>
             <p class="text-2xl font-bold text-primary">{{ $totalApar }}</p>
         </div>
-        <div class="card bg-success/5 border border-success/20 p-4">
-            <p class="text-xs text-base-content/50 uppercase tracking-wider">Aktif</p>
-            <p class="text-2xl font-bold text-success">{{ $aparAktif }}</p>
+        <div class="card stat-card-aktif p-4">
+            <p class="text-xs opacity-60 uppercase tracking-wider">Aktif</p>
+            <p class="text-2xl font-bold">{{ $aparAktif }}</p>
         </div>
-        <div class="card bg-error/5 border border-error/20 p-4">
-            <p class="text-xs text-base-content/50 uppercase tracking-wider">Rusak</p>
-            <p class="text-2xl font-bold text-error">{{ $aparRusak }}</p>
+        <div class="card stat-card-rusak p-4">
+            <p class="text-xs opacity-60 uppercase tracking-wider">Rusak</p>
+            <p class="text-2xl font-bold">{{ $aparRusak }}</p>
         </div>
-        <div class="card bg-warning/5 border border-warning/20 p-4">
-            <p class="text-xs text-base-content/50 uppercase tracking-wider">Expired</p>
-            <p class="text-2xl font-bold text-warning">{{ $aparExpired }}</p>
+        <div class="card stat-card-expired p-4">
+            <p class="text-xs opacity-60 uppercase tracking-wider">Expired</p>
+            <p class="text-2xl font-bold">{{ $aparExpired }}</p>
         </div>
     </div>
 
@@ -93,12 +93,17 @@
                             <td class="text-sm font-semibold">{{ $apar->kapasitas }} Kg</td>
                             <td class="text-sm">{{ $apar->tanggal_expire?->format('d/m/Y') ?? '-' }}</td>
                             <td>
-                                <span class="badge badge-sm
-                                    {{ $apar->status === 'aktif' ? 'badge-success' : '' }}
-                                    {{ $apar->status === 'rusak' ? 'badge-error' : '' }}
-                                    {{ $apar->status === 'expired' ? 'badge-warning' : '' }}
-                                    {{ $apar->status === 'maintenance' ? 'badge-info' : '' }}
-                                ">{{ ucfirst($apar->status) }}</span>
+                                @php
+                                    $statusStyles = [
+                                        'aktif'       => 'status-aktif',
+                                        'rusak'       => 'status-rusak',
+                                        'expired'     => 'status-expired',
+                                        'maintenance' => 'status-maintenance',
+                                        'disposed'    => 'status-disposed',
+                                    ];
+                                    $statusClass = $statusStyles[$apar->status] ?? 'status-disposed';
+                                @endphp
+                                <span class="badge badge-sm {{ $statusClass }} font-medium">{{ ucfirst($apar->status) }}</span>
                             </td>
                             <td>
                                 <div class="flex gap-1">

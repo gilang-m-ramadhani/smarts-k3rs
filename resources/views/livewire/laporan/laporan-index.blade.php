@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new ApexCharts(document.querySelector("#statusPieChart"), {
         series: data,
         labels: labels.map(l => l.charAt(0).toUpperCase() + l.slice(1)),
-        colors: ['#7AB2B2', '#088395', '#09637E', '#EBF4F6'],
+        colors: ['#86EFAC', '#FDA4AF', '#FDE68A', '#7DD3FC'],
         chart: { type: 'donut', height: 280, background: 'transparent', foreColor: textColor },
         stroke: { colors: ['#fff'], width: 3 },
         dataLabels: { enabled: true, style: { fontSize: '13px', fontWeight: 700 } },

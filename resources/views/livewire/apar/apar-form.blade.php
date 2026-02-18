@@ -139,10 +139,7 @@
         <div class="flex justify-end gap-3">
             <a href="{{ route('apar.index') }}" class="btn btn-ghost">Batal</a>
             <button type="submit" class="btn btn-primary shadow-sm shadow-primary/20">
-                <span wire:loading.remove wire:target="save">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    Simpan
-                </span>
+                <span wire:loading.remove wire:target="save">Simpan</span>
                 <span wire:loading wire:target="save" class="loading loading-spinner loading-sm"></span>
             </button>
         </div>
