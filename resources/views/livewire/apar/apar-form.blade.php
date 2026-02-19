@@ -143,17 +143,72 @@
                         <label class="label">
                             <span class="label-text text-base-content/80">Status <span class="text-error">*</span></span>
                         </label>
-                        <div class="flex flex-wrap gap-2">
-                        @foreach(['aktif' => 'success', 'rusak' => 'error', 'expired' => 'warning', 'maintenance' => 'info', 'disposed' => 'ungu'] as $s => $color)
-                        <label class="cursor-pointer">
-                            <input type="radio" wire:model="status" value="{{ $s }}" class="hidden peer" />
-                            <span class="badge badge-lg badge-{{ $color }} badge-outline peer-checked:badge-{{ $color }} peer-checked:text-{{ $color === 'ungu' ? 'white' : $color }}-content peer-checked:shadow-md transition-all">
-                                {{ ucfirst($s) }}
-                            </span>
-                        </label>
-                        @endforeach
-                    </div>
-                        @error('status') <span class="label-text-alt text-error">{{ $message }}</span> @enderror
+                        <div class="flex flex-wrap gap-3">
+                            @php
+                                $statuses = [
+                                    'aktif' => [
+                                        'color' => '#00A651', // Hijau
+                                        'label' => 'Aktif'
+                                    ],
+                                    'rusak' => [
+                                        'color' => '#DC2626', // Merah (Standard Red)
+                                        'label' => 'Rusak'
+                                    ],
+                                    'expired' => [
+                                        'color' => '#F7931D', // Oranye
+                                        'label' => 'Expired'
+                                    ],
+                                    'maintenance' => [
+                                        'color' => '#EC008C', // Pink
+                                        'label' => 'Maintenance'
+                                    ],
+                                    'disposed' => [
+                                        'color' => '#662D91', // Ungu
+                                        'label' => 'Disposed'
+                                    ]
+                                ];
+                            @endphp
+
+                            @foreach($statuses as $key => $data)
+                                <div class="relative">
+                                    <input 
+                                        type="radio" 
+                                        name="status" 
+                                        id="status_{{ $key }}" 
+                                        wire:model="status" 
+                                        value="{{ $key }}" 
+                                        class="peer sr-only"
+                                    />
+                                    
+                                    <label 
+                                        for="status_{{ $key }}" 
+                                        class="
+                                            cursor-pointer select-none px-4 py-2 rounded-full border text-sm font-medium 
+                                            transition-all duration-200 ease-in-out inline-flex items-center gap-2
+                                            bg-white border-gray-300 text-gray-500 hover:bg-gray-50
+                                            peer-checked:text-white peer-checked:shadow-md peer-checked:scale-105 peer-checked:font-bold border-2
+                                        "
+                                        style="--active-color: {{ $data['color'] }}"
+                                    >
+                                        {{-- Ikon Centang --}}
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden peer-checked:block" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                        
+                                        <span>{{ $data['label'] }}</span>
+                                    </label>
+
+                                    {{-- CSS Khusus untuk memaksa warna latar saat diceklis --}}
+                                    <style>
+                                        #status_{{ $key }}:checked + label {
+                                            background-color: {{ $data['color'] }};
+                                            border-color: {{ $data['color'] }};
+                                        }
+                                    </style>
+                                </div>
+                            @endforeach
+                        </div>
+                        @error('status') <span class="label-text-alt text-error mt-2">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>

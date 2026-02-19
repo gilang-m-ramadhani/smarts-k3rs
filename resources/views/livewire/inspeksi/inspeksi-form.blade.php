@@ -67,11 +67,14 @@
                     @endphp
 
                     @foreach($checklistFields as $field => $label)
-                    <div class="checklist-item cursor-pointer p-3 rounded-xl bg-white/30 backdrop-blur-sm border border-white/30 hover:bg-white/40 transition
-                                {{ $$field ? 'bg-success/10 border-success' : '' }}"
-                         wire:click="$toggle('{{ $field }}')">
+                    <div class="checklist-item cursor-pointer p-3 rounded-xl backdrop-blur-sm border transition
+                                {{ $$field ? 'bg-success/10 border-success' : 'bg-error/10 border-error' }}">
+
                         <div class="flex items-center gap-3">
-                            <input type="checkbox" wire:model="{{ $field }}" class="checkbox checkbox-success" onclick="event.stopPropagation()" />
+                            <input type="checkbox" 
+                                wire:model.live="{{ $field }}" 
+                                class="checkbox {{ $$field ? 'checkbox-success' : 'checkbox-error' }}" />
+
                             <div>
                                 <p class="font-medium text-base-content">{{ $label[0] }}</p>
                                 <p class="text-xs text-base-content/100">{{ $label[1] }}</p>

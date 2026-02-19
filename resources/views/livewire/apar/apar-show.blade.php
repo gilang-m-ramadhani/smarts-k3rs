@@ -57,8 +57,20 @@
                         </div>
                         <div>
                             <p class="text-sm text-base-content/100">Status</p>
-                            <span class="badge {{ $apar->status === 'aktif' ? 'badge-success' : ($apar->status === 'rusak' ? 'badge-error' : 'badge-warning') }}">
-                                {{ ucfirst($apar->status) }}
+                            @php
+                                $statusStyles = [
+                                    'aktif'       => ['bg' => '#00A651', 'label' => 'Aktif'],       
+                                    'rusak'       => ['bg' => '#DC2626', 'label' => 'Rusak'],       
+                                    'expired'     => ['bg' => '#F7931D', 'label' => 'Expired'],     
+                                    'maintenance' => ['bg' => '#EC008C', 'label' => 'Maintenance'], 
+                                    'disposed'    => ['bg' => '#662D91', 'label' => 'Disposed'],    
+                                ];
+                                $currentStyle = $statusStyles[$apar->status] ?? ['bg' => '#9CA3AF', 'label' => ucfirst($apar->status)];
+                            @endphp
+                            
+                            <span class="badge border-0 text-white font-bold shadow-sm px-4 py-3" 
+                                  style="background-color: {{ $currentStyle['bg'] }};">
+                                {{ $currentStyle['label'] }}
                             </span>
                         </div>
                         <div>
