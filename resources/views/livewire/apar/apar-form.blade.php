@@ -3,7 +3,7 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
             <h1 class="text-2xl font-bold text-base-content">{{ $mode === 'create' ? 'Tambah APAR Baru' : 'Edit APAR' }}</h1>
-            <p class="text-base-content/60">{{ $mode === 'create' ? 'Registrasi APAR baru ke dalam sistem' : 'Perbarui informasi APAR' }}</p>
+            <p class="text-base-content/100">{{ $mode === 'create' ? 'Registrasi APAR baru ke dalam sistem' : 'Perbarui informasi APAR' }}</p>
         </div>
         <div class="mt-4 md:mt-0">
             <a href="{{ route('apar.index') }}" class="btn btn-ghost">
@@ -242,7 +242,7 @@
                         @endif
                     </div>
                 </div>
-                <p class="text-xs text-base-content/60 font-mono">{{ $kode_qr ?? 'QR akan di-generate' }}</p>
+                <p class="text-xs text-base-content/100 font-mono">{{ $kode_qr ?? 'QR akan di-generate' }}</p>
                 <p class="text-xs text-base-content/40">QR Code akan tersedia setelah data disimpan</p>
             </div>
 
@@ -251,19 +251,19 @@
                 <h3 class="card-title text-sm text-base-content mb-4">Ringkasan</h3>
                 <div class="space-y-2 text-sm">
                     <div class="flex justify-between">
-                        <span class="text-base-content/60">Kode:</span>
+                        <span class="text-base-content/100">Kode:</span>
                         <span class="font-mono font-medium text-base-content">{{ $id_apar ?: '-' }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-base-content/60">Tipe:</span>
+                        <span class="text-base-content/100">Tipe:</span>
                         <span class="text-base-content">{{ strtoupper($tipe_apar) }}</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-base-content/60">Kapasitas:</span>
+                        <span class="text-base-content/100">Kapasitas:</span>
                         <span class="text-base-content">{{ $kapasitas }} kg</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-base-content/60">Merk:</span>
+                        <span class="text-base-content/100">Merk:</span>
                         <span class="text-base-content">{{ $merk ?: '-' }}</span>
                     </div>
                 </div>

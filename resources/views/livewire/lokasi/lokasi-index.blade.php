@@ -3,7 +3,7 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
             <h1 class="text-2xl font-bold text-base-content">Lokasi APAR</h1>
-            <p class="text-base-content/80">Kelola lokasi penempatan APAR</p>
+            <p class="text-base-content/100">Kelola lokasi penempatan APAR</p>
         </div>
         <button wire:click="openModal" class="btn btn-primary mt-4 md:mt-0">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,7 +55,7 @@
                         <td class="border border-base-200/100">{{ $lokasi->gedung }}</td>
                         <td class="border border-base-200/100 text-center">{{ $lokasi->lantai }}</td>
                         <td class="border border-base-200/100">{{ $lokasi->ruangan }}</td>
-                        <td class="border border-base-200/100">
+                        <td class="border border-base-200/100 text-center">
                             <span @class([
                                 'badge badge-sm',
                                 'badge-error' => $lokasi->kategori_risiko === 'tinggi',
@@ -81,7 +81,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-8 text-base-content/80 border border-base-200/70">Tidak ada data lokasi</td>
+                        <td colspan="7" class="text-center py-8 text-base-content/100 border border-base-200/70">Tidak ada data lokasi</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -99,32 +99,32 @@
             <h3 class="font-bold text-lg mb-4 text-base-content">{{ $editMode ? 'Edit Lokasi' : 'Tambah Lokasi' }}</h3>
             <form wire:submit.prevent="save" class="space-y-4">
                 <div class="form-control">
-                    <label class="label"><span class="label-text text-base-content/80">Nama Lokasi *</span></label>
+                    <label class="label"><span class="label-text text-base-content/100">Nama Lokasi *</span></label>
                     <input type="text" wire:model="nama_lokasi" class="input input-bordered w-full @error('nama_lokasi') input-error @enderror" />
                     @error('nama_lokasi') <span class="label-text-alt text-error">{{ $message }}</span> @enderror
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="form-control">
-                        <label class="label"><span class="label-text text-base-content/80">Gedung *</span></label>
+                        <label class="label"><span class="label-text text-base-content/100">Gedung *</span></label>
                         <input type="text" wire:model="gedung" class="input input-bordered w-full" />
                     </div>
                     <div class="form-control">
-                        <label class="label"><span class="label-text text-base-content/80">Lantai *</span></label>
+                        <label class="label"><span class="label-text text-base-content/100">Lantai *</span></label>
                         <input type="text" wire:model="lantai" class="input input-bordered w-full" />
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="form-control">
-                        <label class="label"><span class="label-text text-base-content/80">Ruangan *</span></label>
+                        <label class="label"><span class="label-text text-base-content/100">Ruangan *</span></label>
                         <input type="text" wire:model="ruangan" class="input input-bordered w-full" />
                     </div>
                     <div class="form-control">
-                        <label class="label"><span class="label-text text-base-content/80">Koordinat</span></label>
+                        <label class="label"><span class="label-text text-base-content/100">Koordinat</span></label>
                         <input type="text" wire:model="koordinat" placeholder="A1-ICU-01" class="input input-bordered w-full" />
                     </div>
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text text-base-content/80">Kategori Risiko</span></label>
+                    <label class="label"><span class="label-text text-base-content/100">Kategori Risiko</span></label>
                     <select wire:model="kategori_risiko" class="select select-bordered w-full">
                         <option value="rendah">Rendah</option>
                         <option value="sedang">Sedang</option>
@@ -132,7 +132,7 @@
                     </select>
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text text-base-content/80">Deskripsi</span></label>
+                    <label class="label"><span class="label-text text-base-content/100">Deskripsi</span></label>
                     <textarea wire:model="deskripsi" class="textarea textarea-bordered w-full" rows="2"></textarea>
                 </div>
                 <div class="modal-action">
