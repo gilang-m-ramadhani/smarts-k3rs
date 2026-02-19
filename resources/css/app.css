@@ -106,6 +106,18 @@
     @apply badge-info;
   }
 
+  /* Badge untuk status Disposed dengan warna ungu */
+  .badge-ungu {
+    background-color: #662D91;
+    color: white;
+    border-color: #662D91;
+  }
+  .badge-ungu.badge-outline {
+    background-color: transparent;
+    color: #662D91;
+    border-color: #662D91;
+  }
+
   .stat-card {
     @apply bg-base-100 rounded-2xl shadow-lg p-6 border border-base-300;
   }

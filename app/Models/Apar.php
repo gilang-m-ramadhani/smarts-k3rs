@@ -97,7 +97,7 @@ class Apar extends Model // implements Auditable
             'rusak' => 'badge-error',
             'expired' => 'badge-warning',
             'maintenance' => 'badge-info',
-            'disposed' => 'badge-neutral',
+            'disposed' => 'badge-ungu',
             default => 'badge-ghost',
         };
     }

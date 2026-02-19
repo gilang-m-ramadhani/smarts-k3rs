@@ -65,12 +65,6 @@
                         <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-700">
                             {{ $title }}
                         </h1>
-                        <div class="text-xs breadcrumbs font-medium hidden md:block mt-[-5px]">
-                            <ul>
-                                <li><span class="opacity-50">App</span></li>
-                                <li><span class="text-primary">{{ $title }}</span></li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
 
@@ -132,7 +126,7 @@
         
         <div class="drawer-side z-50">
             <label for="sidebar-drawer" class="drawer-overlay"></label>
-            <aside class="glass-sidebar w-72 min-h-screen flex flex-col">
+            <aside class="glass-sidebar w-60 min-h-screen flex flex-col">
                 
                 <div class="h-1 w-full bg-smart-gradient"></div>
 
