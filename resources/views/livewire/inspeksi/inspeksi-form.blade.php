@@ -12,10 +12,32 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Main Form -->
+    {{-- WRAPPER UTAMA DENGAN LOGIKA ALPINE JS --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6" 
+         x-data="{
+            checklist: {
+                kondisi_tabung: @entangle('kondisi_tabung'),
+                kondisi_selang: @entangle('kondisi_selang'),
+                kondisi_pin: @entangle('kondisi_pin'),
+                kondisi_segel: @entangle('kondisi_segel'),
+                kondisi_nozzle: @entangle('kondisi_nozzle'),
+                kondisi_label: @entangle('kondisi_label'),
+                kondisi_mounting: @entangle('kondisi_mounting'),
+                aksesibilitas: @entangle('aksesibilitas'),
+                signage: @entangle('signage')
+            },
+            get passedCount() {
+                return Object.values(this.checklist).filter(v => v == true).length;
+            },
+            get totalCount() {
+                return Object.keys(this.checklist).length;
+            },
+            get percentage() {
+                return this.totalCount > 0 ? Math.round((this.passedCount / this.totalCount) * 100) : 0;
+            }
+         }">
+
         <div class="lg:col-span-2 space-y-6">
-            <!-- APAR Selection -->
             <div class="glass-card p-6">
                 <h3 class="font-semibold text-lg mb-4 text-base-content">Pilih APAR</h3>
                 
@@ -25,7 +47,7 @@
                             <span class="label-text text-base-content/80">APAR *</span>
                         </label>
                         <select wire:model.live="aparId" 
-                                class="select w-full bg-white/50 backdrop-blur-md border-white/30 text-base-content focus:bg-white/50 @error('aparId') border-error @enderror">
+                                class="select w-full bg-white/50 backdrop-blur-md border-white/30 text-base-content focus:bg-white/50 @error('aparId') border-secondary @enderror">
                             <option value="">Pilih APAR...</option>
                             @foreach($aparList as $apar)
                                 <option value="{{ $apar->id_apar }}">
@@ -33,7 +55,7 @@
                                 </option>
                             @endforeach
                         </select>
-                        @error('aparId') <span class="label-text-alt text-error">{{ $message }}</span> @enderror
+                        @error('aparId') <span class="label-text-alt text-secondary">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="form-control">
@@ -41,13 +63,12 @@
                             <span class="label-text text-base-content/80">Tanggal Inspeksi *</span>
                         </label>
                         <input type="date" wire:model="tanggal_inspeksi" 
-                               class="input w-full bg-white/50 backdrop-blur-md border-white/30 text-base-content focus:bg-white/50 @error('tanggal_inspeksi') border-error @enderror" />
-                        @error('tanggal_inspeksi') <span class="label-text-alt text-error">{{ $message }}</span> @enderror
+                               class="input w-full bg-white/50 backdrop-blur-md border-white/30 text-base-content focus:bg-white/50 @error('tanggal_inspeksi') border-secondary @enderror" />
+                        @error('tanggal_inspeksi') <span class="label-text-alt text-secondary">{{ $message }}</span> @enderror
                     </div>
                 </div>
             </div>
 
-            <!-- Checklist -->
             <div class="glass-card p-6">
                 <h3 class="font-semibold text-lg mb-4 text-base-content">Checklist Inspeksi</h3>
                 
@@ -67,15 +88,18 @@
                     @endphp
 
                     @foreach($checklistFields as $field => $label)
-                    <div class="checklist-item cursor-pointer p-3 rounded-xl backdrop-blur-sm border transition
-                                {{ $$field ? 'bg-success/10 border-success' : 'bg-error/10 border-error' }}">
-
+                    <div class="checklist-item cursor-pointer p-3 rounded-xl border transition-all duration-200"
+                         :class="checklist.{{ $field }} ? 'bg-primary bg-opacity-10 border-primary' : 'bg-secondary bg-opacity-10 border-secondary'"
+                         @click="checklist.{{ $field }} = !checklist.{{ $field }}">
+                        
                         <div class="flex items-center gap-3">
                             <input type="checkbox" 
-                                wire:model.live="{{ $field }}" 
-                                class="checkbox {{ $$field ? 'checkbox-success' : 'checkbox-error' }}" />
-
-                            <div>
+                                   x-model="checklist.{{ $field }}"
+                                   class="checkbox transition-colors duration-200" 
+                                   :class="checklist.{{ $field }} ? 'checkbox-primary' : 'checkbox-secondary'"
+                                   @click.stop />
+                            
+                            <div class="select-none">
                                 <p class="font-medium text-base-content">{{ $label[0] }}</p>
                                 <p class="text-xs text-base-content/100">{{ $label[1] }}</p>
                             </div>
@@ -84,17 +108,16 @@
                     @endforeach
                 </div>
 
-                <!-- Pressure Gauge -->
                 <div class="mt-6 p-4 glass-card p-4">
                     <p class="font-medium text-base mb-3 text-base-content">Kondisi Pressure Gauge *</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         @foreach(['hijau' => 'Normal', 'kuning' => 'Perlu Perhatian', 'merah' => 'Kritis'] as $value => $desc)
                         <div class="p-4 rounded-xl cursor-pointer transition-all duration-200 
-                                    {{ $kondisi_pressure === $value ? 'bg-' . ($value === 'hijau' ? 'success' : ($value === 'kuning' ? 'warning' : 'error')) . '/20 ring-2 ring-' . ($value === 'hijau' ? 'success' : ($value === 'kuning' ? 'warning' : 'error')) 
+                                    {{ $kondisi_pressure === $value ? 'bg-' . ($value === 'hijau' ? 'primary' : ($value === 'kuning' ? 'accent' : 'secondary')) . '/20 ring-2 ring-' . ($value === 'hijau' ? 'primary' : ($value === 'kuning' ? 'accent' : 'secondary')) 
                                        : 'bg-white/30 backdrop-blur-sm border border-white/30 hover:bg-white/40' }}"
                              wire:click="$set('kondisi_pressure', '{{ $value }}')">
                             <div class="flex items-center gap-3">
-                                <div class="w-5 h-5 rounded-full bg-{{ $value === 'hijau' ? 'success' : ($value === 'kuning' ? 'warning' : 'error') }} flex items-center justify-center">
+                                <div class="w-5 h-5 rounded-full bg-{{ $value === 'hijau' ? 'primary' : ($value === 'kuning' ? 'accent' : 'secondary') }} flex items-center justify-center">
                                     @if($kondisi_pressure === $value)
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
@@ -112,7 +135,6 @@
                 </div>
             </div>
 
-            <!-- Notes -->
             <div class="glass-card p-6">
                 <h3 class="font-semibold text-lg mb-4 text-base-content">Catatan & Rekomendasi</h3>
                 
@@ -136,9 +158,7 @@
             </div>
         </div>
 
-        <!-- Sidebar -->
         <div class="space-y-6">
-            <!-- Selected APAR Info -->
             @if($selectedApar)
             <div class="glass-card p-6">
                 <h3 class="font-semibold text-lg mb-4 text-base-content">Info APAR</h3>
@@ -165,41 +185,37 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-base-content/100">Status:</span>
-                        <span class="badge {{ $selectedApar->status_badge_class ?? 'badge-info' }} badge-sm">{{ $selectedApar->status }}</span>
+                        <span class="badge badge-primary badge-sm">{{ $selectedApar->status }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-base-content/100">Expire:</span>
-                        <span class="{{ $selectedApar->is_expired ? 'text-error' : 'text-base-content' }}">{{ $selectedApar->tanggal_expire?->format('d/m/Y') ?? '-' }}</span>
+                        <span class="{{ $selectedApar->is_expired ? 'text-secondary' : 'text-base-content' }}">{{ $selectedApar->tanggal_expire?->format('d/m/Y') ?? '-' }}</span>
                     </div>
                 </div>
             </div>
             @endif
 
-            <!-- Checklist Summary -->
             <div class="glass-card p-6">
                 <h3 class="font-semibold text-lg mb-4 text-base-content">Ringkasan</h3>
-                @php
-                    $checklistItems = [$kondisi_tabung, $kondisi_selang, $kondisi_pin, $kondisi_segel,
-                                      $kondisi_nozzle, $kondisi_label, $kondisi_mounting, $aksesibilitas, $signage];
-                    $passed = collect($checklistItems)->filter()->count();
-                    $total = count($checklistItems);
-                    $percentage = $total > 0 ? round(($passed / $total) * 100) : 0;
-                @endphp
+                
                 <div class="text-center mb-4">
-                    <div class="radial-progress text-{{ $percentage >= 80 ? 'success' : ($percentage >= 50 ? 'warning' : 'error') }}" style="--value:{{ $percentage }}; --size:6rem;">
-                        {{ $percentage }}%
+                    <div class="radial-progress transition-all duration-500 ease-out" 
+                         :class="percentage >= 80 ? 'text-primary' : (percentage >= 50 ? 'text-accent' : 'text-secondary')" 
+                         :style="'--value:' + percentage + '; --size:6rem;'">
+                        <span x-text="percentage + '%'"></span>
                     </div>
                 </div>
+                
                 <p class="text-center text-sm text-base-content/100">
-                    {{ $passed }}/{{ $total }} checklist terpenuhi
+                    <span x-text="passedCount"></span>/<span x-text="totalCount"></span> checklist terpenuhi
                 </p>
+                
                 <div class="mt-3 flex items-center justify-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-{{ $kondisi_pressure === 'hijau' ? 'success' : ($kondisi_pressure === 'kuning' ? 'warning' : 'error') }}"></span>
+                    <span class="w-3 h-3 rounded-full bg-{{ $kondisi_pressure === 'hijau' ? 'primary' : ($kondisi_pressure === 'kuning' ? 'accent' : 'secondary') }}"></span>
                     <span class="text-sm text-base-content">Pressure: {{ ucfirst($kondisi_pressure) }}</span>
                 </div>
             </div>
 
-            <!-- Submit Button -->
             <div class="bg-gradient-to-br from-primary to-secondary text-white shadow-2xl overflow-hidden rounded-3xl p-6">
                 <div class="flex items-center gap-3 mb-3">
                     <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">

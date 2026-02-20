@@ -3,15 +3,15 @@
 
 :root {
   /* Primary – Hijau (#00A651) */
-  --p: 140 100% 33%;
+  --p: 149 100% 33%;
   --pc: 0 0% 100%;
 
-  /* Secondary – Oranye (#F7931D) */
-  --s: 33 93% 54%;
+  /* Secondary – Hijau Gelap (#004D26) */
+  --s: 150 100% 15%;
   --sc: 0 0% 100%;
 
-  /* Accent – Pink (#EC008C) */
-  --a: 324 100% 46%;
+  /* Accent – Oranye (#F7931D) */
+  --a: 33 93% 54%;
   --ac: 0 0% 100%;
 
   /* Neutral */
@@ -25,16 +25,16 @@
   --bc: 0 0% 20%;
 
   /* Status */
-  --in: 277 53% 55%;   /* Info – Ungu */
-  --su: 140 100% 33%;  /* Success – Hijau */
-  --wa: 33 93% 54%;    /* Warning – Oranye */
-  --er: 0 84% 60%;  /* Error – Merah */
+  --in: 148 54% 94%;   /* Info – Mint (#E6F7EE) */
+  --su: 149 100% 33%;  /* Success – Hijau (#00A651) */
+  --wa: 33 93% 54%;    /* Warning – Oranye (#F7931D) */
+  --er: 0 84% 60%;     /* Error – Merah (#DC2626) */
 
-  --color-primary: hsl(140, 100%, 33%);
+  --color-primary: hsl(149, 100%, 33%);
   --color-primary-content: hsl(0, 0%, 100%);
-  --color-secondary: hsl(33, 93%, 54%);
+  --color-secondary: hsl(150, 100%, 15%);
   --color-secondary-content: hsl(0, 0%, 100%);
-  --color-accent: hsl(324, 100%, 46%);
+  --color-accent: hsl(33, 93%, 54%);
   --color-accent-content: hsl(0, 0%, 100%);
   --color-neutral: hsl(0, 0%, 20%);
   --color-neutral-content: hsl(0, 0%, 100%);
@@ -42,20 +42,20 @@
   --color-base-200: hsl(0, 0%, 96%);
   --color-base-300: hsl(0, 0%, 92%);
   --color-base-content: hsl(0, 0%, 20%);
-  --color-info: hsl(324, 100%, 46%);
-  --color-success: hsl(140, 100%, 33%);
+  --color-info: hsl(148, 54%, 94%);
+  --color-success: hsl(149, 100%, 33%);
   --color-warning: hsl(33, 93%, 54%);
   --color-error: hsl(0, 84%, 60%);
 }
 
 [data-theme="dark"] {
-  --p: 140 100% 28%;
+  --p: 149 100% 28%;
   --pc: 0 0% 100%;
 
-  --s: 33 93% 44%;
+  --s: 150 100% 10%;
   --sc: 0 0% 100%;
 
-  --a: 324 100% 36%;
+  --a: 33 93% 44%;
   --ac: 0 0% 100%;
 
   --n: 0 0% 30%;
@@ -66,12 +66,12 @@
   --b3: 0 0% 20%;
   --bc: 0 0% 80%;
 
-  --in: 277 53% 45%;
-  --su: 140 100% 28%;
+  --in: 148 54% 84%;
+  --su: 149 100% 28%;
   --wa: 33 93% 44%;
   --er: 0 84% 60%;
 
-  --color-primary: hsl(140, 100%, 28%);
+  --color-primary: hsl(149, 100%, 28%);
   --color-base-100: hsl(0, 0%, 10%);
   --color-base-200: hsl(0, 0%, 15%);
   --color-base-300: hsl(0, 0%, 20%);
@@ -106,16 +106,16 @@
     @apply badge-info;
   }
 
-  /* Badge untuk status Disposed dengan warna ungu */
+  /* Badge untuk status Disposed dengan warna Hijau Gelap (menggantikan ungu) */
   .badge-ungu {
-    background-color: #662D91;
+    background-color: #004D26;
     color: white;
-    border-color: #662D91;
+    border-color: #004D26;
   }
   .badge-ungu.badge-outline {
     background-color: transparent;
-    color: #662D91;
-    border-color: #662D91;
+    color: #004D26;
+    border-color: #004D26;
   }
 
   .stat-card {
@@ -154,10 +154,10 @@
     @apply rounded-3xl shadow-2xl p-8 border border-white/30;
     background: linear-gradient(
         145deg,
-        rgba(0, 166, 81, 0.20),
-        rgba(247, 147, 29, 0.20),
-        rgba(236, 0, 140, 0.10),
-        rgba(102, 45, 145, 0.10)
+        rgba(0, 166, 81, 0.20),   /* Hijau */
+        rgba(247, 147, 29, 0.20), /* Oranye */
+        rgba(0, 77, 38, 0.10),    /* Hijau Gelap */
+        rgba(230, 247, 238, 0.10) /* Mint */
     ), rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
@@ -167,15 +167,14 @@
     @apply rounded-3xl shadow-2xl p-8 border border-white/30;
     background: linear-gradient(
         145deg,
-        rgba(0, 166, 81, 0.20),
-        rgba(247, 147, 29, 0.20),
-        rgba(236, 0, 140, 0.10),
-        rgba(102, 45, 145, 0.10)
+        rgba(0, 166, 81, 0.20),   /* Hijau */
+        rgba(247, 147, 29, 0.20), /* Oranye */
+        rgba(0, 77, 38, 0.10),    /* Hijau Gelap */
+        rgba(230, 247, 238, 0.10) /* Mint */
     ), rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    }
-
+  }
 
   .btn-gradient {
     @apply bg-gradient-to-r from-primary to-secondary text-white border-0 hover:opacity-90 transition-all duration-300;
@@ -189,10 +188,10 @@
     background-image:
         linear-gradient(
             145deg,
-            rgba(0, 166, 81, 0.45),  
-            rgba(247, 147, 29, 0.45),
-            rgba(236, 0, 140, 0.18),  
-            rgba(102, 45, 145, 0.18)
+            rgba(0, 166, 81, 0.45),   /* Hijau */
+            rgba(247, 147, 29, 0.45), /* Oranye */
+            rgba(0, 77, 38, 0.18),    /* Hijau Gelap */
+            rgba(230, 247, 238, 0.18) /* Mint */
         ),
         url('/images/bg-app.png');
     background-size: cover;
@@ -225,11 +224,11 @@
   }
 
   .bg-smart-gradient {
-    background: linear-gradient(90deg, #00A651 0%, #F7931D 33%, #EC008C 66%, #662D91 100%);
+    background: linear-gradient(90deg, #00A651 0%, #F7931D 33%, #004D26 66%, #E6F7EE 100%);
   }
 
   .text-smart-gradient {
-    background: linear-gradient(90deg, #00A651 0%, #F7931D 33%, #EC008C 66%, #662D91 100%);
+    background: linear-gradient(90deg, #00A651 0%, #F7931D 33%, #004D26 66%, #E6F7EE 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -244,7 +243,7 @@
 
   .glass-sidebar {
     @apply border-r border-white/40;
-    background: rgba(255, 255, 255, 0.60); /* Lebih transparan agar background terlihat */
+    background: rgba(255, 255, 255, 0.60);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -256,9 +255,9 @@
   }
 
   .menu-gradient-active {
-    background: linear-gradient(90deg, rgba(0, 166, 81, 0.1), rgba(102, 45, 145, 0.05));
-    border-left: 4px solid #EC008C; /* Aksen Pink di kiri */
-    color: #662D91 !important; /* Text Ungu */
+    background: linear-gradient(90deg, rgba(0, 166, 81, 0.1), rgba(0, 77, 38, 0.05));
+    border-left: 4px solid #00A651; /* Aksen Hijau di kiri */
+    color: #004D26 !important; /* Text Hijau Gelap */
     font-weight: 600;
     border-radius: 0.5rem;
   }
@@ -322,7 +321,7 @@
 
 .pressure-merah {
   background-color: #DC2626;
-  box-shadow: 0 0 0 2px rgba(236, 0, 140, 0.25);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25);
 }
 
 .text-readable {

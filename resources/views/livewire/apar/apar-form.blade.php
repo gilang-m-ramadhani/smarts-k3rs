@@ -147,23 +147,28 @@
                             @php
                                 $statuses = [
                                     'aktif' => [
-                                        'color' => '#00A651', // Hijau
+                                        'color' => '#00A651',
+                                        'text' => '#ffffff',
                                         'label' => 'Aktif'
                                     ],
                                     'rusak' => [
-                                        'color' => '#DC2626', // Merah (Standard Red)
+                                        'color' => '#004D26', 
+                                        'text' => '#ffffff',
                                         'label' => 'Rusak'
                                     ],
                                     'expired' => [
-                                        'color' => '#F7931D', // Oranye
+                                        'color' => '#F7931D', 
+                                        'text' => '#ffffff',
                                         'label' => 'Expired'
                                     ],
                                     'maintenance' => [
-                                        'color' => '#EC008C', // Pink
+                                        'color' => '#E6F7EE', 
+                                        'text' => '#004D26', 
                                         'label' => 'Maintenance'
                                     ],
                                     'disposed' => [
-                                        'color' => '#662D91', // Ungu
+                                        'color' => '#004D26', 
+                                        'text' => '#ffffff',
                                         'label' => 'Disposed'
                                     ]
                                 ];

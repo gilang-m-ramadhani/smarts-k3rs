@@ -21,7 +21,7 @@
                 <div class="space-y-3">
                     <div>
                         <div class="text-xs text-base-content/100">APAR ID</div>
-                        <div class="font-mono font-bold text-base-content">{{ $inspeksi->apar->id_apar }}</div>
+                        <div class="font-mono font-bold text-primary">{{ $inspeksi->apar->id_apar }}</div>
                     </div>
                     <div>
                         <div class="text-xs text-base-content/100">Lokasi</div>
@@ -29,7 +29,7 @@
                     </div>
                     <div>
                         <div class="text-xs text-base-content/100">Tipe</div>
-                        <div class="badge badge-outline">{{ strtoupper($inspeksi->apar->tipe_apar) }}</div>
+                        <div class="badge badge-primary badge-outline">{{ strtoupper($inspeksi->apar->tipe_apar) }}</div>
                     </div>
                 </div>
 
@@ -47,7 +47,16 @@
                     </div>
                     <div>
                         <div class="text-xs text-base-content/100">Status Akhir</div>
-                        <div class="badge {{ $inspeksi->overall_status_badge }}">
+                        {{-- Logika agar 'rusak' dipaksa menjadi merah (error) --}}
+                        @php
+                            $statusBadge = match($inspeksi->overall_status) {
+                                'baik' => 'badge-primary text-white border-primary',
+                                'kurang' => 'badge-accent text-white border-accent',
+                                'rusak' => 'badge-error text-white border-error',
+                                default => 'badge-ghost'
+                            };
+                        @endphp
+                        <div class="badge {{ $statusBadge }}">
                             {{ ucfirst($inspeksi->overall_status) }}
                         </div>
                     </div>
@@ -64,7 +73,16 @@
                 <h3 class="card-title mb-6 text-base-content">Rincian Pengecekan</h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-4 border border-white/30 rounded-lg {{ $inspeksi->pressure_status == 'hijau' ? 'bg-success/10' : 'bg-error/10' }} backdrop-blur-sm">
+                    {{-- Logic Background box pressure --}}
+                    @php
+                        $pressureBg = match($inspeksi->pressure_status) {
+                            'hijau' => 'bg-primary/10 border-primary/30',
+                            'kuning' => 'bg-accent/10 border-accent/30',
+                            'merah' => 'bg-error/10 border-error/30',
+                            default => 'bg-base-200 border-white/30'
+                        };
+                    @endphp
+                    <div class="p-4 border rounded-lg {{ $pressureBg }} backdrop-blur-sm">
                         <div class="flex items-center gap-3">
                             <span class="pressure-indicator pressure-{{ $inspeksi->pressure_status }}"></span>
                             <span class="font-medium text-base-content">Tekanan (Pressure)</span>
@@ -82,9 +100,9 @@
                     <div class="flex items-center justify-between p-3 border border-white/30 rounded-lg hover:bg-base-200/30 transition backdrop-blur-sm">
                         <span class="text-sm text-base-content">{{ $label }}</span>
                         @if($inspeksi->$field)
-                            <span class="badge badge-success gap-1">OK</span>
+                            <span class="badge badge-primary text-white gap-1">OK</span>
                         @else
-                            <span class="badge badge-error gap-1">Masalah</span>
+                            <span class="badge badge-error text-white gap-1">Masalah</span>
                         @endif
                     </div>
                     @endforeach

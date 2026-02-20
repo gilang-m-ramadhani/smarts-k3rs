@@ -18,14 +18,15 @@
 
     <style>
         body { font-family: 'Inter', sans-serif; }
+        
         .body-bg {
             background-image: 
                 linear-gradient(
                     145deg,
-                    rgba(0, 166, 81, 0.45),  
-                    rgba(247, 147, 29, 0.45),
-                    rgba(236, 0, 140, 0.18),  
-                    rgba(102, 45, 145, 0.18)
+                    rgba(0, 166, 81, 0.45),   /* #00A651 - Hijau */
+                    rgba(247, 147, 29, 0.45), /* #F7931D - Oranye */
+                    rgba(0, 77, 38, 0.18),    /* #004D26 - Hijau Gelap */
+                    rgba(230, 247, 238, 0.18) /* #E6F7EE - Hijau Muda/Mint */
                 ),
                 url('/images/bg-app.png');
             background-size: cover;
@@ -34,7 +35,10 @@
             background-attachment: fixed;
         }
 
-        /* Jika gambar tidak ada, fallback gradient solid */
+        .bg-smart-gradient {
+            background-image: linear-gradient(to right, #00A651, #F7931D, #004D26, #E6F7EE);
+        }
+
         @media (prefers-reduced-motion: no-preference) {
             .body-bg {
                 background-color: #f5f5f5; /* fallback */
@@ -62,7 +66,7 @@
                 
                 <div class="flex-1 px-2 mx-2">
                     <div class="flex flex-col">
-                        <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-700">
+                        <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
                             {{ $title }}
                         </h1>
                     </div>

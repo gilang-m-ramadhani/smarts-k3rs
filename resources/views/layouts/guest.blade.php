@@ -23,8 +23,8 @@
                     145deg,
                     rgba(0, 166, 81, 0.45),  
                     rgba(247, 147, 29, 0.45),
-                    rgba(236, 0, 140, 0.18),  
-                    rgba(102, 45, 145, 0.18)
+                    rgba(0, 77, 38, 0.18),  
+                    rgba(230, 247, 238, 0.18)
                 ),
                 url('/images/bg-login.png');
             background-size: cover;
@@ -37,8 +37,8 @@
             background-image: 
                 radial-gradient(ellipse at 20% 30%, rgba(0, 166, 81, 0.25) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 70%, rgba(247, 147, 29, 0.25) 0%, transparent 50%),
-                radial-gradient(ellipse at 40% 60%, rgba(236, 0, 140, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 20%, rgba(102, 45, 145, 0.15) 0%, transparent 60%);
+                radial-gradient(ellipse at 40% 60%, rgba(0, 77, 38, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(230, 247, 238, 0.15) 0%, transparent 60%);
         }
 
         .floating-shapes {

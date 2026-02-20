@@ -85,8 +85,8 @@ class Inspeksi extends Model // implements Auditable
     public function getOverallStatusBadgeAttribute(): string
     {
         return match($this->overall_status) {
-            'baik' => 'badge-success',
-            'kurang' => 'badge-warning',
+            'baik' => 'badge-primary',
+            'kurang' => 'badge-accent',
             'rusak' => 'badge-error',
             default => 'badge-ghost',
         };
@@ -131,5 +131,3 @@ class Inspeksi extends Model // implements Auditable
         ];
     }
 }
-
-
