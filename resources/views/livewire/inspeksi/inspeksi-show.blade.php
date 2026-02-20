@@ -102,7 +102,7 @@
                         @if($inspeksi->$field)
                             <span class="badge badge-primary text-white gap-1">OK</span>
                         @else
-                            <span class="badge badge-error text-white gap-1">Masalah</span>
+                            <span class="badge badge-error text-white gap-1">Rusak</span>
                         @endif
                     </div>
                     @endforeach

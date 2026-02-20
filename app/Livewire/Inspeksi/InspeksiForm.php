@@ -12,7 +12,7 @@ class InspeksiForm extends Component
 {
     public $aparId = '';
     public $tanggal_inspeksi;
-    
+    public $is_reversed = false; 
     // Checklist items
     public $kondisi_tabung = true;   
     public $kondisi_selang = true;   
@@ -35,15 +35,6 @@ class InspeksiForm extends Component
         'aparId' => 'required|exists:apar,id_apar',
         'tanggal_inspeksi' => 'required|date',
         'kondisi_pressure' => 'required|in:hijau,kuning,merah',
-        'kondisi_tabung' => 'boolean',
-        'kondisi_selang' => 'boolean',
-        'kondisi_pin' => 'boolean',
-        'kondisi_segel' => 'boolean',
-        'kondisi_nozzle' => 'boolean',
-        'kondisi_label' => 'boolean',
-        'kondisi_mounting' => 'boolean',
-        'aksesibilitas' => 'boolean',
-        'signage' => 'boolean',
     ];
 
     public function mount($apar = null)
@@ -66,12 +57,23 @@ class InspeksiForm extends Component
     {
         if ($this->aparId) {
             $this->selectedApar = Apar::with('lokasi', 'vendor')->find($this->aparId);
+            $this->is_reversed = false; 
+        } else {
+            $this->selectedApar = null;
+            $this->is_reversed = false;
         }
     }
 
     public function save()
     {
-        $this->validate();
+        $this->validate(); 
+
+        if ($this->selectedApar && $this->selectedApar->tipe_apar === 'powder') {
+            if (!$this->is_reversed || $this->is_reversed === 'false') {
+                session()->flash('error', 'Gagal Simpan: Anda wajib mengonfirmasi bahwa tabung APAR Powder telah dibalik.');
+                return;
+            }
+        }
 
         $overallStatus = 'baik';
         
@@ -104,16 +106,16 @@ class InspeksiForm extends Component
                 'tanggal_inspeksi' => $this->tanggal_inspeksi,
                 'next_inspection' => \Carbon\Carbon::parse($this->tanggal_inspeksi)->addMonth(),
                 'pressure_status' => $this->kondisi_pressure,
-                'physical_condition' => $this->kondisi_tabung ? 'baik' : 'rusak', 
-                'hose_condition' => $this->kondisi_selang ? 'baik' : 'rusak',
-                'seal_condition' => $this->kondisi_segel ? 'baik' : 'rusak',
-                'nozzle_condition' => $this->kondisi_nozzle ? 'baik' : 'rusak',
-                'handle_condition' => $this->kondisi_pin ? 'baik' : 'rusak',
-                'label_condition' => $this->kondisi_label ? 'baik' : 'rusak',
-                'signage_condition' => $this->signage ? 'baik' : 'rusak',
-                'height_position' => $this->kondisi_mounting ? 'baik' : 'rusak', 
-                'accessibility' => $this->aksesibilitas ? 'baik' : 'rusak',
-                'cleanliness' => true, 
+                'physical_condition' => $this->kondisi_tabung, 
+                'hose_condition' => $this->kondisi_selang,
+                'seal_condition' => $this->kondisi_segel,
+                'nozzle_condition' => $this->kondisi_nozzle,
+                'handle_condition' => $this->kondisi_pin,
+                'label_condition' => $this->kondisi_label,
+                'signage_condition' => $this->signage,
+                'height_position' => $this->kondisi_mounting, 
+                'accessibility' => $this->aksesibilitas,
+                'cleanliness' => true,
                 
                 'overall_status' => $overallStatus,
                 'catatan' => $this->catatan . ($this->rekomendasi ? "\n\nRekomendasi: " . $this->rekomendasi : ''),
@@ -141,7 +143,7 @@ class InspeksiForm extends Component
 
         } catch (\Exception $e) {
             DB::rollBack();
-            session()->flash('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->flash('error', 'Terjadi kesalahan sistem/database: ' . $e->getMessage());
         }
     }
 
